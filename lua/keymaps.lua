@@ -1,4 +1,4 @@
--- local wk = require 'which-key'
+local wk = require 'which-key'
 -----------------------------------------------------------------------------
 
 -----------------------------------------------------------------------------
@@ -32,7 +32,14 @@ vim.keymap.set("n", "<leader>qa", "<cmd>qa<cr>", { desc = "Quit All" })
 vim.keymap.set("n", "/", [[/\v]])
 
 -- Compare Split Windows
--- wk.add { '<leader>wc', '<cmd>windo diffthis<cr>', desc = '[c]ompare [w]indows', mode = 'n', icon = { icon = '󰆊', color = 'green' } }
+-- windows
+vim.keymap.set('n', '<leader>ww', '<C-W>p', { desc = 'Other Window', remap = true })
+vim.keymap.set('n', '<leader>wd', '<C-W>c', { desc = 'Delete Window', remap = true })
+vim.keymap.set('n', '<leader>w-', '<C-W>v', { desc = 'Split Window Below', remap = true })
+vim.keymap.set('n', '<leader>w|', '<C-W>s', { desc = 'Split Window Right', remap = true })
+vim.keymap.set('n', '<leader>-', '<C-W>v', { desc = 'Split Window Below', remap = true })
+vim.keymap.set('n', '<leader>|', '<C-W>s', { desc = 'Split Window Right', remap = true })
+wk.add { '<leader>wc', '<cmd>windo diffthis<cr>', desc = '[c]ompare [w]indows', mode = 'n', icon = { icon = '󰆊', color = 'green' } }
 
 -----------------------------------------------------------------------------
 -- Chainsaw logging Plugin
@@ -123,6 +130,7 @@ vim.keymap.set(
 	{ noremap = true, silent = true, desc = "[c]hainsaw [l]og [r]emove" }
 )
 vim.keymap.set("n", "<leader>a", "<cmd>AerialToggle!<CR>")
+
 
 -----------------------------------------------------------------------------
 --- End Chainsaw mappings
