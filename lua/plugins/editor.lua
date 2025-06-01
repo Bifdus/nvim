@@ -420,21 +420,6 @@ return {
 		},
 	},
 
-	{
-		"echasnovski/mini.surround",
-		opts = {
-			mappings = {
-				add = "gsa", -- Add surrounding in Normal and Visual modes
-				delete = "gsd", -- Delete surrounding
-				find = "gsf", -- Find surrounding (to the right)
-				find_left = "gsF", -- Find surrounding (to the left)
-				highlight = "gsh", -- Highlight surrounding
-				replace = "gsr", -- Replace surrounding
-				update_n_lines = "gsn", -- Update `n_lines`
-			},
-		},
-	},
-
 	-- auto pairs
 	{
 		"windwp/nvim-autopairs",
@@ -455,20 +440,6 @@ return {
 	},
 
 	-- DEV
-	-- Rest interface
-	{
-		"mistweaverco/kulala.nvim",
-		keys = {
-			{ "<leader>Rs", desc = "Send request", ft = { "http", "rest" } },
-			{ "<leader>Ra", desc = "Send all requests", ft = { "http", "rest" } },
-			{ "<leader>Ro", desc = "Open scratchpad", ft = { "http", "rest" } },
-		},
-		ft = { "http", "rest", "html" },
-		opts = {
-			-- your configuration comes here
-			global_keymaps = false,
-		},
-	},
 
 	--- Better Visual for help files
 	{
@@ -560,4 +531,8 @@ return {
 			require("barbecue").setup(opts)
 		end,
 	},
+
+	-----------------------------------------------------------------------------
+	-- Improved word navigation  
+  { 'chrisgrieser/nvim-spider', lazy = true },
 }

@@ -161,6 +161,33 @@ return {
 		end,
 	},
 
+	{
+		"lukas-reineke/headlines.nvim",
+		ft = { "markdown" },
+		enabled = false,
+		config = function()
+			-- Colors for orgmode headlines
+			vim.cmd([[highlight Headline1 guibg=#21262d]])
+			-- vim.cmd [[highlight Headline2 guibg=#21262d]]
+
+			local bullet_highlighs = {
+				"@markup.heading.1.markdown",
+				"@markup.heading.2.markdown",
+				"@markup.heading.3.markdown",
+				"@markup.heading.4.markdown",
+				"@markup.heading.5.markdown",
+				"@markup.heading.6.markdown",
+			}
+			require("headlines").setup({
+				org = {
+					headline_highlights = { "Headline1" },
+					bullets = { "◉", "○", "✸", "✿" },
+					bullet_highlighs = bullet_highlighs,
+				},
+			})
+		end,
+	},
+
 	-----------------------------------------------------------------------------
 	-- Preview Markdown
 	{
@@ -308,30 +335,4 @@ return {
 	--   end,
 	-- },
 
-	{
-		"lukas-reineke/headlines.nvim",
-		ft = { "markdown" },
-		enabled = false,
-		config = function()
-			-- Colors for orgmode headlines
-			vim.cmd([[highlight Headline1 guibg=#21262d]])
-			-- vim.cmd [[highlight Headline2 guibg=#21262d]]
-
-			local bullet_highlighs = {
-				"@markup.heading.1.markdown",
-				"@markup.heading.2.markdown",
-				"@markup.heading.3.markdown",
-				"@markup.heading.4.markdown",
-				"@markup.heading.5.markdown",
-				"@markup.heading.6.markdown",
-			}
-			require("headlines").setup({
-				org = {
-					headline_highlights = { "Headline1" },
-					bullets = { "◉", "○", "✸", "✿" },
-					bullet_highlighs = bullet_highlighs,
-				},
-			})
-		end,
-	},
 }

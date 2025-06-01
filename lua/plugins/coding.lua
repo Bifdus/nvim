@@ -1,4 +1,33 @@
 return {
+	-----------------------------------------------------------------------------
+	-- Comments, with context
+	{
+		"numToStr/Comment.nvim",
+		dependencies = { "JoosepAlviste/nvim-ts-context-commentstring" },
+		ft = { "javascriptreact", "typescriptreact" },
+		keys = {
+			{
+				"<Leader>V",
+				"<Plug>(comment_toggle_blockwise_current)",
+				mode = "n",
+				desc = "Comment",
+				ft = { "typescriptreact", "javascriptreact" },
+			},
+			{
+				"<Leader>V",
+				"<Plug>(comment_toggle_blockwise_visual)",
+				mode = "x",
+				desc = "Comment",
+				ft = { "typescriptreact", "javascriptreact" },
+			},
+		},
+		opts = function(_, opts)
+			local ok, tcc = pcall(require, "ts_context_commentstring.integrations.comment_nvim")
+			if ok then
+				opts.pre_hook = tcc.create_pre_hook()
+			end
+		end,
+	},
 	{
 		"stevearc/aerial.nvim",
 		opts = {
@@ -17,48 +46,21 @@ return {
 		},
 	},
 
-	{ -- Adds git related signs to the gutter, as well as utilities for managing changes
-		"lewis6991/gitsigns.nvim",
-		event = { "BufReadPost" },
+	-- Rest interface
+	{
+		"mistweaverco/kulala.nvim",
+		keys = {
+			{ "<leader>Rs", desc = "Send request", ft = { "http", "rest" } },
+			{ "<leader>Ra", desc = "Send all requests", ft = { "http", "rest" } },
+			{ "<leader>Ro", desc = "Open scratchpad", ft = { "http", "rest" } },
+		},
+		ft = { "http", "rest", "html" },
 		opts = {
-			signs = {
-				add = { text = "+" },
-				change = { text = "~" },
-				delete = { text = "_" },
-				topdelete = { text = "‾" },
-				changedelete = { text = "~" },
-			},
-			on_attach = function(bufnr)
-				local gitsigns = require("gitsigns")
-
-				local function map(mode, l, r, opts)
-					opts = opts or {}
-					opts.buffer = bufnr
-					vim.keymap.set(mode, l, r, opts)
-				end
-
-				-- Navigation
-				map("n", "]c", function()
-					if vim.wo.diff then
-						vim.cmd.normal({ "]c", bang = true })
-					else
-						gitsigns.nav_hunk("next")
-					end
-				end, { desc = "Jump to next git [c]hange" })
-
-				map("n", "[c", function()
-					if vim.wo.diff then
-						vim.cmd.normal({ "[c", bang = true })
-					else
-						gitsigns.nav_hunk("prev")
-					end
-				end, { desc = "Jump to previous git [c]hange" })
-
-				map("n", "<leader>ub", gitsigns.toggle_current_line_blame, { desc = "[T]oggle git show [b]lame line" })
-				map("n", "<leader>uD", gitsigns.preview_hunk_inline, { desc = "[T]oggle git show [D]eleted" })
-			end,
+			-- your configuration comes here
+			global_keymaps = false,
 		},
 	},
+
 
 	-----------------------------------------------------------------------------
 	-- Quick log lines with smart variable identification, only python, lua and JS
@@ -155,37 +157,6 @@ return {
 						["h"] = false,
 					},
 				},
-			})
-		end,
-	},
-
-	-----------------------------------------------------------------------------
-	-- Leetcode Problems
-	{
-		"kawre/leetcode.nvim",
-		build = ":TSUpdate html",
-		cmd = "Leet",
-		dependencies = {
-			-- 'nvim-telescope/telescope.nvim',
-			"nvim-lua/plenary.nvim", -- required by telescope
-			"MunifTanjim/nui.nvim",
-
-			-- optional
-			"nvim-treesitter/nvim-treesitter",
-			"rcarriga/nvim-notify",
-			"nvim-tree/nvim-web-devicons",
-		},
-		opts = {
-			-- configuration goes here
-			lang = "python3",
-		},
-	},
-	{
-		"roobert/f-string-toggle.nvim",
-		config = function()
-			require("f-string-toggle").setup({
-				key_binding = "<leader>f",
-				key_binding_desc = "Toggle f-string",
 			})
 		end,
 	},
@@ -325,39 +296,6 @@ return {
 	},
 
 	{
-		"2kabhishek/exercism.nvim",
-		cmd = {
-			"ExercismLanguages",
-			"ExercismList",
-			"ExercismSubmit",
-			"ExercismTest",
-		},
-		keys = {
-			{ "<leader>lxa", "<cmd>ExercismList<CR>", desc = "Exercism All exercises" },
-			{ "<leader>lxl", "<cmd>ExercismLanguages<CR>", desc = "Exercism Languages" },
-			{ "<leader>lxt", "<cmd>ExercismTest<CR>", desc = "ExercismTest" },
-			{ "<leader>lxs", "<cmd>ExercismSubmit<CR>", desc = "ExercismSubmit" },
-		},
-		dependencies = {
-			{
-				"2kabhishek/utils.nvim",
-				opts = {
-					fuzzy_provider = "snacks",
-				},
-			},
-			"2kabhishek/termim.nvim", -- optional, better UX for running tests
-		},
-		-- Add your custom configs here, keep it blank for default configs (required)
-		opts = {
-			exercism_workspace = "~/exercism",
-			default_language = "typescript",
-			add_default_keybindings = false,
-		},
-		config = function(_, opts)
-			require("exercism").setup(opts)
-		end,
-	},
-	{
 		"rachartier/tiny-inline-diagnostic.nvim",
 		event = "VeryLazy",
 		priority = 1000,
@@ -366,6 +304,9 @@ return {
 			vim.diagnostic.config({ virtual_text = false, virtual_lines = false })
 		end,
 	},
+
+	-----------------------------------------------------------------------------
+	-- Mini
 	{
 		"echasnovski/mini.pairs",
 		event = "VeryLazy",
@@ -385,6 +326,20 @@ return {
 		config = function(_, opts)
 			LazyVim.mini.pairs(opts)
 		end,
+	},
+	{
+		"echasnovski/mini.surround",
+		opts = {
+			mappings = {
+				add = "gsa", -- Add surrounding in Normal and Visual modes
+				delete = "gsd", -- Delete surrounding
+				find = "gsf", -- Find surrounding (to the right)
+				find_left = "gsF", -- Find surrounding (to the left)
+				highlight = "gsh", -- Highlight surrounding
+				replace = "gsr", -- Replace surrounding
+				update_n_lines = "gsn", -- Update `n_lines`
+			},
+		},
 	},
 	{
 		"echasnovski/mini.ai",
@@ -424,4 +379,84 @@ return {
 			end)
 		end,
 	},
+
+	-----------------------------------------------------------------------------
+	-- Perform diffs on blocks of code
+	{
+		"AndrewRadev/linediff.vim",
+		cmd = { "Linediff", "LinediffAdd" },
+		keys = {
+			{ "<leader>mdf", ":Linediff<CR>", mode = "x", desc = "Line diff" },
+			{ "<leader>mda", ":LinediffAdd<CR>", mode = "x", desc = "Line diff add" },
+			{ "<leader>mds", "<cmd>LinediffShow<CR>", desc = "Line diff show" },
+			{ "<leader>mdr", "<cmd>LinediffReset<CR>", desc = "Line diff reset" },
+		},
+	},
+
+	-----------------------------------------------------------------------------
+	-- Learning Section 
+	{
+		"2kabhishek/exercism.nvim",
+		cmd = {
+			"ExercismLanguages",
+			"ExercismList",
+			"ExercismSubmit",
+			"ExercismTest",
+		},
+		keys = {
+			{ "<leader>lxa", "<cmd>ExercismList<CR>", desc = "Exercism All exercises" },
+			{ "<leader>lxl", "<cmd>ExercismLanguages<CR>", desc = "Exercism Languages" },
+			{ "<leader>lxt", "<cmd>ExercismTest<CR>", desc = "ExercismTest" },
+			{ "<leader>lxs", "<cmd>ExercismSubmit<CR>", desc = "ExercismSubmit" },
+		},
+		dependencies = {
+			{
+				"2kabhishek/utils.nvim",
+				opts = {
+					fuzzy_provider = "snacks",
+				},
+			},
+			"2kabhishek/termim.nvim", -- optional, better UX for running tests
+		},
+		-- Add your custom configs here, keep it blank for default configs (required)
+		opts = {
+			exercism_workspace = "~/exercism",
+			default_language = "typescript",
+			add_default_keybindings = false,
+		},
+		config = function(_, opts)
+			require("exercism").setup(opts)
+		end,
+	},
+	-----------------------------------------------------------------------------
+	-- Leetcode Problems
+	{
+		"kawre/leetcode.nvim",
+		build = ":TSUpdate html",
+		cmd = "Leet",
+		dependencies = {
+			-- 'nvim-telescope/telescope.nvim',
+			"nvim-lua/plenary.nvim", -- required by telescope
+			"MunifTanjim/nui.nvim",
+
+			-- optional
+			"nvim-treesitter/nvim-treesitter",
+			"rcarriga/nvim-notify",
+			"nvim-tree/nvim-web-devicons",
+		},
+		opts = {
+			-- configuration goes here
+			lang = "python3",
+		},
+	},
+	{
+		"roobert/f-string-toggle.nvim",
+		config = function()
+			require("f-string-toggle").setup({
+				key_binding = "<leader>f",
+				key_binding_desc = "Toggle f-string",
+			})
+		end,
+	},
+
 }
