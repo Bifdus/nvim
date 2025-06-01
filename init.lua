@@ -22,4 +22,6 @@ require("lazy").setup({
 	},
 }, {})
 
+_G.LazyVim = require 'util'
+
 -- vim: ts=2 sts=2 sw=2 et

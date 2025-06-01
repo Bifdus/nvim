@@ -45,7 +45,7 @@ return {
 				Snacks.toggle.zen():map("<leader>uz")
 				Snacks.toggle.treesitter():map("<leader>uT")
 				Snacks.toggle.diagnostics():map("<leader>ud")
-				-- require("util.format").snacks_toggle():map("<leader>uf")
+				require("util.format").snacks_toggle():map("<leader>uf")
 			end,
 		})
 	end,
