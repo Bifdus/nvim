@@ -303,7 +303,7 @@ return {
 		"otavioschwanck/arrow.nvim",
 		opts = {
 			show_icons = true,
-			leader_key = ";", -- Recommended to be a single key
+			leader_key = "m", -- Recommended to be a single key
 			-- buffer_leader_key = 'm', -- Per Buffer Mappings
 		},
 	},
@@ -343,53 +343,20 @@ return {
 	{
 		"folke/flash.nvim",
 		event = "VeryLazy",
-		---@type Flash.Config
-		opts = {},
-    -- stylua: ignore
-    keys = {
-      {';', mode ={'n', 'x', 'o'}, false},
-      {',', mode ={'n', 'x', 'o'}, false},
-      {
-        's',
-        mode = { 'n', 'x', 'o' },
-        function()
-          require('flash').jump()
-        end,
-        desc = 'flash',
-      },
-      -- {
-      --   't',
-      --   mode = { 'n', 'x', 'o' },
-      --   function()
-      --     require('flash').treesitter_search()
-      --   end,
-      --   desc = 'flash treesitter',
-      -- },
-      {
-        'r',
-        mode = 'o',
-        function()
-          require('flash').remote()
-        end,
-        desc = 'Remote Flash',
-      },
-      {
-        'S',
-        mode = { 'o', 'x' },
-        function()
-          require('flash').treesitter_search()
-        end,
-        desc = 'Treesitter Search',
-      },
-      {
-        '<leader>uF',
-        mode = { 'n' },
-        function()
-          require('flash').toggle()
-        end,
-        desc = 'Toggle Flash Search',
-      },
-    },
+		opts = {
+			modes = {
+				char = {
+					char_actions = function(motion)
+						return {
+							[";"] = "prev",
+							[","] = "next",
+							[motion:lower()] = "next",
+							[motion:upper()] = "prev",
+						}
+					end,
+				},
+			},
+		},
 	},
 
 	{ "ethanholz/nvim-lastplace", opts = {} },
