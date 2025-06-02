@@ -22,6 +22,10 @@ return {
       },
 		---@type NoiceConfig
 		opts = {
+      cmdline = {
+        enabled = true,
+        view = "cmdline"
+      },
 			lsp = {
 				override = {
 					["vim.lsp.util.convert_input_to_markdown_lines"] = true,
