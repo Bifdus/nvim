@@ -533,6 +533,6 @@ return {
 	},
 
 	-----------------------------------------------------------------------------
-	-- Improved word navigation  
-  { 'chrisgrieser/nvim-spider', lazy = true },
+	-- Improved word navigation
+	{ "chrisgrieser/nvim-spider", lazy = true },
 }
