@@ -167,10 +167,10 @@ return {
 				docker_compose_language_service = {},
 				bashls = {},
 				jsonls = { filetypes = { "json" } },
-				sqlls = {
-					filetypes = { "sql", "mysql" },
-					connections = { driver = "mssql" },
-				},
+				-- sqlls = {
+				-- 	filetypes = { "sql", "mysql" },
+				-- 	connections = { driver = "mssql" },
+				-- },
 				jdtls = {},
 				lua_ls = {
 					settings = {
