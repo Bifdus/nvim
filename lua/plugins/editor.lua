@@ -433,8 +433,8 @@ return {
 			{
 				"<leader>sy",
 				function()
-					if LazyVim.pick.picker.name == "telescope" then
-						require("telescope").extensions.yank_history.yank_history({})
+					if picker == "snacks" then
+						Snacks.picker.yanky()
 					else
 						vim.cmd([[YankyRingHistory]])
 					end
@@ -460,6 +460,8 @@ return {
 			{ "<P", "<Plug>(YankyPutIndentBeforeShiftLeft)", desc = "Put Before and Indent Left" },
 			{ "=p", "<Plug>(YankyPutAfterFilter)", desc = "Put After Applying a Filter" },
 			{ "=P", "<Plug>(YankyPutBeforeFilter)", desc = "Put Before Applying a Filter" },
+			{ "<C-p>", "<Plug>(YankyPreviousEntry)", mode = { "n" }, desc = "Cycle Through Yank History" },
+			{ "<C-n>", "<Plug>(YankyNextEntry)", mode = { "n" }, desc = "Cycle Back Through Yank History" },
 		},
 	},
 
@@ -501,5 +503,5 @@ return {
 
 	-----------------------------------------------------------------------------
 	-- Improved word navigation
-	{ "chrisgrieser/nvim-spider", lazy = true },
+	{ "chrisgrieser/nvim-spider", lazy = false },
 }
