@@ -1,3 +1,10 @@
+vim.filetype.add({
+  pattern = {
+    ["docker%-compose%.yml$"] = "yaml.docker-compose",
+    ["docker%-compose%.yaml$"] = "yaml.docker-compose",
+  },
+})
+
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
