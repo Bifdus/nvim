@@ -179,6 +179,7 @@ return {
 						},
 					},
 				},
+        angularls = {},
 				phpactor = {
 					cmd = { "intelephense", "--stdio" },
 					filetypes = { "php" },
