@@ -1,5 +1,6 @@
 return {
 	"snacks.nvim",
+	enabled = true,
 	priority = 1000,
 	lazy = false,
 	init = function()
@@ -50,7 +51,7 @@ return {
 		})
 	end,
 	opts = {
-		bigfile = { enabled = false },
+		bigfile = { enabled = true },
 		scroll = { enabled = false },
 		terminal = { enabled = true },
 		notifier = { enabled = true },
