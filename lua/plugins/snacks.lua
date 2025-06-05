@@ -48,7 +48,7 @@ return {
     bigfile = { enabled = true },
     scroll = { enabled = false },
     terminal = { enabled = true },
-    notifier = { enabled = true },
+    notifier = { enabled = true, top_down = false },
     scratch = { enabled = true },
     explorer = { enabled = true },
     scope = { enabled = false },
