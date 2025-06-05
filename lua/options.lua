@@ -1,6 +1,9 @@
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
+vim.o.foldmethod = "expr"
+vim.o.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+
 -- Set to true if you have a Nerd Font installed and selected in the terminal
 vim.g.have_nerd_font = true
 
@@ -32,7 +35,6 @@ vim.opt.splitbelow = true
 vim.opt.relativenumber = true
 vim.opt.foldlevelstart = 99
 
-
 vim.opt.title = true
 
 -- Expand tab
@@ -53,7 +55,7 @@ vim.opt.inccommand = "split"
 -- How certain whitespace characters should be displayed in the editor
 vim.opt.list = true
 vim.opt.listchars = {
-	tab = "  ",
+	tab = "│─",
 	extends = "⟫",
 	precedes = "⟪",
 	conceal = "",
