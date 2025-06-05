@@ -9,7 +9,7 @@ vim.g.have_nerd_font = true
 
 -- Sets default clip to OS default
 vim.schedule(function()
-	vim.opt.clipboard = "unnamedplus"
+  vim.opt.clipboard = "unnamedplus"
 end)
 
 -- General Defaults
@@ -55,27 +55,27 @@ vim.opt.inccommand = "split"
 -- How certain whitespace characters should be displayed in the editor
 vim.opt.list = true
 vim.opt.listchars = {
-	tab = "│─",
-	extends = "⟫",
-	precedes = "⟪",
-	conceal = "",
-	nbsp = "␣",
-	trail = "·",
+  tab = "│─",
+  extends = "⟫",
+  precedes = "⟪",
+  conceal = "",
+  nbsp = "␣",
+  trail = "·",
 }
 
 -- Statusline fill chars
 vim.opt.fillchars = {
-	foldopen = "", -- 󰅀 
-	foldclose = "", -- 󰅂 
-	fold = " ", -- ⸱
-	foldsep = " ",
-	diff = "╱",
-	eob = " ",
-	horiz = "━",
-	horizup = "┻",
-	horizdown = "┳",
-	vert = "┃",
-	vertleft = "┫",
-	vertright = "┣",
-	verthoriz = "╋",
+  foldopen = "", -- 󰅀 
+  foldclose = "", -- 󰅂 
+  fold = " ", -- ⸱
+  foldsep = " ",
+  diff = "╱",
+  eob = " ",
+  horiz = "━",
+  horizup = "┻",
+  horizdown = "┳",
+  vert = "┃",
+  vertleft = "┫",
+  vertright = "┣",
+  verthoriz = "╋",
 }

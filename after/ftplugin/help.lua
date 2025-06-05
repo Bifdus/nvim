@@ -1,1 +1,1 @@
-vim.keymap.set('n', '<CR>', '<c-]>', {silent=true})
+vim.keymap.set("n", "<CR>", "<c-]>", { silent = true })

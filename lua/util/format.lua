@@ -44,15 +44,15 @@ end
 
 ---@param buf? boolean
 function M.snacks_toggle(buf)
-  return Snacks.toggle {
-    name = 'Auto Format (' .. (buf and 'Buffer' or 'Global') .. ')',
+  return Snacks.toggle({
+    name = "Auto Format (" .. (buf and "Buffer" or "Global") .. ")",
     get = function()
       return M.enabled(buf)
     end,
     set = function(state)
       M.enable(state, buf)
     end,
-  }
+  })
 end
 
 return M
