@@ -13,7 +13,7 @@ vim.opt.rtp:prepend(lazypath)
 
 -- [[ Configure and install plugins ]]
 require("lazy").setup({
-  spec = { { import = "plugins" }, { import = "lsp" } },
+    spec = { { import = "plugins" }, { import = "lsp" }, 'NMAC427/guess-indent.nvim' },
   change_detection = {
     enabled = true,
     notify = false,
