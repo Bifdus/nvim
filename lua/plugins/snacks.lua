@@ -140,6 +140,12 @@ return {
     { "<leader>sB", function() Snacks.picker.grep_buffers() end, desc = "Grep Open Buffers" },
     { "<leader>sg", function() Snacks.picker.grep() end, desc = "Grep" },
     { "<leader>sG", function() Snacks.picker.grep({ignored = true }) end, desc = "Grep Including Ignored" },
+    { "<leader>se", function()
+      local pattern  = vim.fn.input("Glob pattern to include eg */folder/*.sql")
+      if pattern ~= "" then
+        Snacks.picker.grep({glob=pattern, live = true})
+      end
+    end, desc = "Grep with glob"},
     { "<leader>sw", function() Snacks.picker.grep_word() end, desc = "Visual selection or word", mode = { "n", "x" } },
     -- Org Roam Notes
     {"<leader>so", function() Snacks.picker.grep{cwd = vim.fn.expand("~/orgfiles/roam"), glob = "*.org"} end, {desc = "Roam: Grep"}},
