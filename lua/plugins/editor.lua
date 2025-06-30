@@ -349,17 +349,15 @@ return {
     opts = {
       modes = {
         char = {
-          char_actions = function(motion)
-            return {
-              [";"] = "prev",
-              [","] = "next",
-              [motion:lower()] = "next",
-              [motion:upper()] = "prev",
-            }
-          end,
+          enabled = false,
         },
       },
     },
+    keys = {
+      { "s", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
+      { "S", mode = { "n", "x", "o" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
+      { "us", mode = { "c" }, function() require("flash").toggle() end, desc = "Toggle Flash Search" },
+    }
   },
 
   { "ethanholz/nvim-lastplace", opts = {} },
