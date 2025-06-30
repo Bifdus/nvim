@@ -45,7 +45,7 @@ return {
     })
   end,
   opts = {
-    bigfile = { enabled = true },
+    bigfile = { enabled = false },
     scroll = { enabled = false },
     terminal = { enabled = true },
     notifier = { enabled = true, top_down = false },
