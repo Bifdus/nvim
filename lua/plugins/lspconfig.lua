@@ -25,8 +25,21 @@ return {
         "Hoffs/omnisharp-extended-lsp.nvim",
         lazy = true,
       },
-      { "williamboman/mason.nvim", config = true, version = "1.11.0" },
-      { "williamboman/mason-lspconfig.nvim", version = "1.32.0" },
+      {
+        "williamboman/mason.nvim",
+        config = true,
+        version = "1.11.0",
+        opts = {
+          registries = {
+            "github:mason-org/mason-registry", -- core registry
+            "github:Crashdummyy/mason-registry",
+          },
+        },
+      },
+      {
+        "williamboman/mason-lspconfig.nvim",
+        version = "1.32.0",
+      },
       "WhoIsSethDaniel/mason-tool-installer.nvim",
       { "j-hui/fidget.nvim", opts = {} },
       -- "saghen/blink.cmp",
@@ -158,7 +171,7 @@ return {
         },
         docker_compose_language_service = {},
         bashls = {},
-        jsonls = { filetypes = { "json" } },
+        jsonls = { filetypes = { "json", "jsonc" } },
         -- sqlls = {
         -- 	filetypes = { "sql", "mysql" },
         -- 	connections = { driver = "mssql" },
@@ -209,7 +222,7 @@ return {
       -- Setup Mason and ensure required tools are installed.
       require("mason").setup()
       local ensure_installed = vim.tbl_keys(servers or {})
-      vim.list_extend(ensure_installed, { "stylua", "prettier", "black" })
+      vim.list_extend(ensure_installed, { "stylua", "prettier", "black", "roslyn" })
       require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
       require("mason-lspconfig").setup({
         ensure_installed = {},
