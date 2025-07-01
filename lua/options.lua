@@ -5,6 +5,25 @@ vim.filetype.add({
   },
 })
 
+-- Sets default clip to OS default
+vim.o.clipboard = "unnamedplus"
+
+vim.g.clipboard = {
+
+  name = 'clip.exe',
+
+  copy = {
+    ['+'] = 'clip.exe',
+
+    ['*'] = 'clip.exe',
+  },
+  paste = {
+    ['+'] = 'powershell.exe -NoProfile -Command Get-Clipboard',
+    ['*'] = 'powershell.exe -NoProfile -Command Get-Clipboard',
+  },
+  cache_enabled = 0,
+}
+
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
@@ -13,11 +32,6 @@ vim.o.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 
 -- Set to true if you have a Nerd Font installed and selected in the terminal
 vim.g.have_nerd_font = true
-
--- Sets default clip to OS default
-vim.schedule(function()
-  vim.opt.clipboard = "unnamedplus"
-end)
 
 -- General Defaults
 vim.g.autoformat = false
