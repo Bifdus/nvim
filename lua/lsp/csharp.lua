@@ -1,12 +1,14 @@
--- return {
--- 	-- C# LSP
--- 	{
--- 		"seblyng/roslyn.nvim",
---     enabled = false,
--- 		ft = "cs",
--- 		opts = { -- defaults are fine if you'll install via Mason
--- 			-- leave empty unless you need custom `cmd` or `config`
--- 		},
--- 	},
--- }
-return {}
+return {
+  -- C# LSP
+  {
+    "seblyng/roslyn.nvim",
+    enabled = true,
+    ft = "cs",
+    opts = {},
+  },
+  {
+    "Hoffs/omnisharp-extended-lsp.nvim",
+    lazy = true,
+  },
+}
+-- return {}
