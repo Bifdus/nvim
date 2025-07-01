@@ -124,8 +124,8 @@ return {
     { "<leader>fp", function() Snacks.picker.projects() end, desc = "Projects" },
     { "<leader>fr", function() Snacks.picker.recent() end, desc = "Recent" },
     -- explorer
-    { "\\", function() Snacks.picker.explorer() end, desc = "Explorer" },
     { "<leader>e", function() Snacks.picker.explorer() end, desc = "Explorer" },
+    -- { "<leader>e", function() Snacks.picker.explorer() end, desc = "Explorer" },
     { "<leader>E", function() Snacks.picker.explorer({cwd = LazyVim.root.cwd()}) end, desc = "Explorer" },
     -- git
     { "<leader>gb", function() Snacks.picker.git_branches() end, desc = "Git Branches" },
