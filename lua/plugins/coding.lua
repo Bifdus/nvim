@@ -379,10 +379,38 @@ return {
       { "github/copilot.vim" }, -- or zbirenbaum/copilot.lua
       { "nvim-lua/plenary.nvim", branch = "master" }, -- for curl, log and async functions
     },
+    enabled = false,
     build = "make tiktoken",
     opts = {
-      -- See Configuration section for options
+      auto_insert = true,
+      show_folds = false,
+      mappings = {
+        complete = { insert = "<Tab>", normal = false },
+      },
+      on_open = function(bufnr)
+        vim.keymap.set("i", "<Tab>", "copilot#Complete()", { expr = true, buffer = bufnr })
+      end,
     },
     -- See Commands section for default commands if you want to lazy load on them
+  },
+  {
+    "zbirenbaum/copilot.lua",
+    event = "InsertEnter",
+    enabled = false,
+    opts = {
+      suggestion = {
+        enabled = true,
+        auto_trigger = true,
+        keymap = {
+          accept = "<C-l>",
+          next = "<M-]>",
+          prev = "<M-[>",
+          dismiss = "<C-]>",
+        },
+      },
+    },
+    config = function(_, opts)
+      require("copilot").setup(opts)
+    end,
   },
 }
