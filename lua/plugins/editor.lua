@@ -391,19 +391,14 @@ return {
   -- auto pairs
   {
     "windwp/nvim-autopairs",
-    event = "VeryLazy",
+    event = "InsertEnter",
+    enabled = false,
     opts = {
-      enable_check_bracket_line = false,
-      ignored_next_char = "[%w%.]",
+      enable_check_bracket_line = true,
       check_ts = true,
-      ts_config = {
-        lua = { "string" },
-        javascript = { "template_string" },
-        java = false,
-      },
     },
     config = function(_, opts)
-      require("nvim-autopairs").setup({ opts })
+      require("nvim-autopairs").setup(opts)
     end,
   },
 

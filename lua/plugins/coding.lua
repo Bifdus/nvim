@@ -223,8 +223,8 @@ return {
   -- Mini
   {
     "echasnovski/mini.pairs",
-    event = "VeryLazy",
-    enabled = false,
+    event = "InsertEnter",
+    enabled = true,
     opts = {
       modes = { insert = true, command = true, terminal = false },
       -- skip autopair when next character is one of these
