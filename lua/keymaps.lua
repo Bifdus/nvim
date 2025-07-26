@@ -167,3 +167,8 @@ vim.keymap.set({ "n", "o", "x" }, "e", "<cmd>lua require('spider').motion('e')<C
 vim.keymap.set({ "n", "o", "x" }, "b", "<cmd>lua require('spider').motion('b')<CR>", { desc = "Spider-b" })
 vim.keymap.set("i", "<C-f>", "<Esc>l<cmd>lua require('spider').motion('w')<CR>i")
 vim.keymap.set("i", "<C-b>", "<Esc><cmd>lua require('spider').motion('b')<CR>i")
+
+-- Copilot
+vim.keymap.set("n", "<leader>ct", function()
+  require("copilot.suggestion").toggle_auto_trigger()
+end, { desc = "Toggle Copilot Ghost Text" })
