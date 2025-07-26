@@ -376,41 +376,35 @@ return {
   {
     "CopilotC-Nvim/CopilotChat.nvim",
     dependencies = {
-      { "github/copilot.vim" }, -- or zbirenbaum/copilot.lua
-      { "nvim-lua/plenary.nvim", branch = "master" }, -- for curl, log and async functions
+      { "zbirenbaum/copilot.lua" },
+      { "nvim-lua/plenary.nvim", branch = "master" },
     },
-    enabled = false,
+    event = "VeryLazy",
+    enabled = true,
     build = "make tiktoken",
     opts = {
       auto_insert = true,
       show_folds = false,
-      mappings = {
-        complete = { insert = "<Tab>", normal = false },
-      },
-      on_open = function(bufnr)
-        vim.keymap.set("i", "<Tab>", "copilot#Complete()", { expr = true, buffer = bufnr })
-      end,
-    },
-    -- See Commands section for default commands if you want to lazy load on them
-  },
-  {
-    "zbirenbaum/copilot.lua",
-    event = "InsertEnter",
-    enabled = false,
-    opts = {
       suggestion = {
         enabled = true,
-        auto_trigger = true,
+        auto_trigger = false,
         keymap = {
-          accept = "<C-l>",
+          accept = "<C-x>",
           next = "<M-]>",
           prev = "<M-[>",
           dismiss = "<C-]>",
         },
       },
+      filetypes = {
+        markdown = true,
+        text = true,
+      },
     },
+
     config = function(_, opts)
-      require("copilot").setup(opts)
+      vim.g.copilot_assume_mapped = true
+      require("copilot").setup({ suggestion = opts.suggestion, filetypes = opts.filetypes })
+      require("CopilotChat").setup(opts)
     end,
   },
 }
