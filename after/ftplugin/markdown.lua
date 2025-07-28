@@ -14,7 +14,7 @@ vim.keymap.set("n", "<Tab>", function()
     vim.cmd("normal! za")
     vim.cmd("normal! zz") -- center the cursor line on screen
   end
-end, { desc = "[P]Toggle fold" })
+end, { desc = "[P]Toggle fold", buffer=true })
 
 -- Crate task or checkbox lamw26wmal
 -- These are marked with <leader>x using bullets.vim
@@ -54,6 +54,6 @@ vim.keymap.set({ "n", "i" }, "<M-c>", function()
   vim.api.nvim_set_current_line(final_line)
   -- "- [ ] " is 6 characters
   vim.api.nvim_win_set_cursor(0, { row, 6 })
-end, { desc = "Convert bullet to a task or insert new task bullet" })
+end, { desc = "Convert bullet to a task or insert new task bullet", buffer=true })
 
 -----------------------------------------------------------------------------
