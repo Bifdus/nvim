@@ -63,6 +63,16 @@ end, { desc = "Delete Other Buffers" })
 vim.keymap.set("n", "<leader>bD", "<cmd>:bd<cr>", { desc = "Delete Buffer and Window" })
 
 -----------------------------------------------------------------------------
+-- Utility Mappings
+
+-- Remove trailing whitespace in the current buffer
+vim.keymap.set("n", "<leader>rw", [[:%s/\s\+$//<cr>]], { silent = true, desc = "Remove trailing whitespace" })
+
+vim.keymap.set("", "<leader>fs", function()
+  require("conform").format({ async = true, lsp_fallback = true })
+end)
+
+-----------------------------------------------------------------------------
 -- Chainsaw logging Plugin
 
 -- log the name & value of the variable under the cursor
