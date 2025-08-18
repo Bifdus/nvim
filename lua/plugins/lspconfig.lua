@@ -56,7 +56,6 @@ return {
 
           -- require('lsp_signature').on_attach(_, event.buf)
 
-          map("<leader>D", "<cmd>Lspsaga peek_type_definition<CR>", "Type [D]efinition")
           map("<leader>rn", "<cmd>Lspsaga rename<CR>", "[R]e[n]ame")
           map("<leader>ca", "<cmd>Lspsaga code_action<CR>", "[C]ode [A]ction", { "n", "x" })
           map("K", "<cmd>Lspsaga hover_doc<CR>", "Hover Documentation")
