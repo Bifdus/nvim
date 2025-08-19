@@ -7,7 +7,6 @@ return {
       -- Setup orgmode
       require("orgmode").setup({
         calendar = { round_min_with_hours = true, min_big_step = 15, min_small_step = 1 },
-        hyperlinks = { sources = {} },
         org_use_property_inheritance = true,
         org_log_repeat = "time",
         org_id_method = "ts",
@@ -23,6 +22,32 @@ return {
             org_capture = "<leader>oc",
           },
         },
+        org_capture_templates = {
+          t = { description = "Task → Inbox", template = "* TODO %?\n  %u", target = "~/orgfiles/refile.org" },
+          n = { description = "Note → Inbox", template = "* %?\n  %u", target = "~/orgfiles/refile.org" },
+          m = {
+            description = "Meeting note (dated)",
+            target = "~/orgfiles/meetings.org",
+            template = "* %? %<%Y-%m-%d>\n:PROPERTIES:\n:ATTENDEES:\n:END:\n%u\n",
+          },
+        },
+      })
+    end,
+  },
+  {
+    "chipsenkbeil/org-roam.nvim",
+    tag = "0.1.1",
+    dependencies = {
+      { "nvim-orgmode/orgmode", tag = "0.3.7" },
+    },
+    config = function()
+      require("org-roam").setup({
+        database = {
+          update_on_save = true,
+        },
+        directory = "~/orgfiles/roam",
+        -- Same folder as orgmode for backlinks to orgmode files
+        org_files = { "~/orgfiles/**/*" },
       })
     end,
   },
@@ -30,6 +55,7 @@ return {
   {
     "obsidian-nvim/obsidian.nvim",
     version = "*",
+    enabled = false,
     lazy = true,
     dependencies = {
       "nvim-lua/plenary.nvim",
