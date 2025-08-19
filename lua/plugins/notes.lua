@@ -18,6 +18,8 @@ return {
         org_refile_target_files = "~/orgfiles/archive.org",
         win_split_mode = "vertical",
         mappings = {
+          capture = { org_capture_finalize = "<C-s>" },
+          note = { org_note_finalize = "<C-s>" },
           global = {
             org_agenda = "<leader>oa",
             org_capture = "<leader>oc",
