@@ -173,7 +173,7 @@ return {
             },
           },
         },
-        ruff_lsp = {},
+        ruff = {},
         docker_compose_language_service = {},
         bashls = {},
         jsonls = { filetypes = { "json", "jsonc" } },
@@ -214,6 +214,15 @@ return {
         },
         lemminx = {},
         marksman = {
+          single_file_support = false,
+          root_dir = function(fname)
+            -- Skip floating buffers (LSP Saga code action window in particular)
+            local buf = vim.api.nvim_get_current_buf()
+            local bt = vim.bo[buf].buftype
+            if bt ~= "" or fname == "" then
+              return nil
+            end
+          end,
           filetypes = { "markdown" },
         },
       }
