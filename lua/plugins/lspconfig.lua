@@ -159,15 +159,21 @@ return {
         basedpyright = {
           settings = {
             basedpyright = {
+              disableOrganizeImports = true,
+              disableTaggedHints = true,
               analysis = {
                 typeCheckingMode = "basic",
                 autoSearchPaths = true,
                 useLibraryCodeForTypes = true,
                 diagnosticMode = "workspace",
+                diagnosticSeverityOverrides = {
+                  reportUnusedImport = "none",
+                },
               },
             },
           },
         },
+        ruff_lsp = {},
         docker_compose_language_service = {},
         bashls = {},
         jsonls = { filetypes = { "json", "jsonc" } },
