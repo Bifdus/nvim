@@ -3,6 +3,7 @@ return {
   -- Note taking and todo list
   {
     "nvim-orgmode/orgmode",
+    event = "VeryLazy",
     config = function()
       -- Setup orgmode
       require("orgmode").setup({
@@ -36,14 +37,15 @@ return {
   },
   {
     "chipsenkbeil/org-roam.nvim",
-    tag = "0.1.1",
+    lazy = false,
     dependencies = {
-      { "nvim-orgmode/orgmode", tag = "0.3.7" },
+      "nvim-orgmode/orgmode",
     },
     config = function()
       require("org-roam").setup({
         database = {
           update_on_save = true,
+          persist = true,
         },
         directory = "~/orgfiles/roam",
         -- Same folder as orgmode for backlinks to orgmode files

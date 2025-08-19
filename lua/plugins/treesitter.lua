@@ -15,8 +15,7 @@ return {
       auto_install = true,
       highlight = {
         enable = true,
-        disable = { "org" },
-        additional_vim_regex_highlighting = { "ruby", "org", "markdown" },
+        additional_vim_regex_highlighting = { "ruby", "markdown" },
       },
     },
     config = function(_, opts)
