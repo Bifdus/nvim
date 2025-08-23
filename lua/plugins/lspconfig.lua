@@ -173,7 +173,17 @@ return {
             },
           },
         },
-        ruff = {},
+        ruff = {
+          init_options = {
+            settings = {
+              lint = {
+                ignore = {
+                  "E401",
+                },
+              },
+            },
+          },
+        },
         docker_compose_language_service = {},
         bashls = {},
         jsonls = { filetypes = { "json", "jsonc" } },
