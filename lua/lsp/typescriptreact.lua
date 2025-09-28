@@ -3,6 +3,7 @@ return {
   -- Better typescript lsp
   {
     "pmizio/typescript-tools.nvim",
+    enabled = false,
     ft = { "html", "css", "javascript", "typescript", "typescriptreact", "javascriptreact" },
     dependencies = { "nvim-lua/plenary.nvim", "SmiteshP/nvim-navic" },
     opts = {
@@ -28,7 +29,8 @@ return {
 
   {
     "luckasRanarison/tailwind-tools.nvim",
-    ft = {"typescriptreact", "typescript"},
+    enabled = false,
+    ft = { "typescriptreact", "typescript" },
     name = "tailwind-tools",
     build = ":UpdateRemotePlugins",
     dependencies = {

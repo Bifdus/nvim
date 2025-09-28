@@ -126,7 +126,7 @@ return {
     -- explorer
     { "<leader>e", function() Snacks.picker.explorer() end, desc = "Explorer" },
     -- { "<leader>e", function() Snacks.picker.explorer() end, desc = "Explorer" },
-    { "<leader>E", function() Snacks.picker.explorer({cwd = LazyVim.root.cwd()}) end, desc = "Explorer" },
+    { "<leader>E", function() Snacks.picker.explorer({cwd = Util.root.cwd()}) end, desc = "Explorer" },
     -- git
     { "<leader>gb", function() Snacks.picker.git_branches() end, desc = "Git Branches" },
     { "<leader>gl", function() Snacks.picker.git_log() end, desc = "Git Log" },

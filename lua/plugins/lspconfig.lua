@@ -28,7 +28,6 @@ return {
       {
         "williamboman/mason.nvim",
         config = true,
-        version = "1.11.0",
         opts = {
           registries = {
             "github:mason-org/mason-registry", -- core registry
@@ -38,13 +37,25 @@ return {
       },
       {
         "williamboman/mason-lspconfig.nvim",
-        version = "1.32.0",
       },
       "WhoIsSethDaniel/mason-tool-installer.nvim",
       { "j-hui/fidget.nvim", opts = {} },
       -- "saghen/blink.cmp",
     },
     config = function()
+      -- Create the LSP capabilities, enhancing them with cmp_nvim_lsp.
+      -- local capabilities = vim.lsp.protocol.make_client_capabilities()
+      -- capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
+      local capabilities = require("cmp_nvim_lsp").default_capabilities()
+      vim.lsp.config("*", { capabilities = capabilities })
+
+      local function act(kind)
+        vim.lsp.buf.code_action({
+          context = { only = { kind }, diagnostics = vim.diagnostic.get(bufnr) },
+          apply = true,
+        })
+      end
+
       -- This autocommand runs whenever an LSP attaches to a buffer.
       vim.api.nvim_create_autocmd("LspAttach", {
         group = vim.api.nvim_create_augroup("kickstart-lsp-attach", { clear = true }),
@@ -53,8 +64,6 @@ return {
             mode = mode or "n"
             vim.keymap.set(mode, keys, func, { buffer = event.buf, desc = "LSP: " .. desc })
           end
-
-          -- require('lsp_signature').on_attach(_, event.buf)
 
           map("<leader>rn", "<cmd>Lspsaga rename<CR>", "[R]e[n]ame")
           map("<leader>ca", "<cmd>Lspsaga code_action<CR>", "[C]ode [A]ction", { "n", "x" })
@@ -73,6 +82,7 @@ return {
           end
 
           local client = vim.lsp.get_client_by_id(event.data.client_id)
+
           if
             client
             and client_supports_method(client, vim.lsp.protocol.Methods.textDocument_documentHighlight, event.buf)
@@ -150,10 +160,6 @@ return {
       -- NOTE: disabled due to using cmp
       -- local capabilities = require("blink.cmp").get_lsp_capabilities()
 
-      -- Create the LSP capabilities, enhancing them with cmp_nvim_lsp.
-      local capabilities = vim.lsp.protocol.make_client_capabilities()
-      capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
-
       -- Define server-specific settings.
       local servers = {
         basedpyright = {
@@ -168,6 +174,7 @@ return {
                 diagnosticMode = "workspace",
                 diagnosticSeverityOverrides = {
                   reportUnusedImport = "none",
+                  reportAttributeAccessIssue = "none",
                 },
               },
             },
@@ -184,6 +191,7 @@ return {
             },
           },
         },
+        yamlls = {},
         docker_compose_language_service = {},
         bashls = {},
         jsonls = { filetypes = { "json", "jsonc" } },
@@ -199,78 +207,188 @@ return {
             },
           },
         },
-        angularls = {},
-        phpactor = {
-          cmd = { "intelephense", "--stdio" },
-          filetypes = { "php" },
+        angularls = { enabled = false },
+        ts_ls = { enabled = false },
+        vtsls = {
+          filetypes = {
+            "javascript",
+            "javascriptreact",
+            "javascript.jsx",
+            "typescript",
+            "typescriptreact",
+            "typescript.tsx",
+          },
           settings = {
-            intelephense = {
-              environment = { includePaths = { "../symfony/lib", "./lib/model" } },
-              files = {
-                exclude = {
-                  "**/cache/**",
-                  "**/vendor/**",
+            complete_function_calls = true,
+            vtsls = {
+              enableMoveToFileCodeAction = true,
+              autoUseWorkspaceTsdk = true,
+              experimental = {
+                maxInlayHintLength = 30,
+                completion = {
+                  enableServerSideFuzzyMatch = true,
                 },
               },
-              stubs = { "pdo", "xml", "curl", "spl" },
+            },
+            typescript = {
+              updateImportsOnFileMove = { enabled = "always" },
+              suggest = {
+                completeFunctionCalls = true,
+              },
+              inlayHints = {
+                enumMemberValues = { enabled = true },
+                functionLikeReturnTypes = { enabled = true },
+                parameterNames = { enabled = "literals" },
+                parameterTypes = { enabled = true },
+                propertyDeclarationTypes = { enabled = true },
+                variableTypes = { enabled = false },
+              },
+            },
+          },
+          keys = {
+            {
+              "gD",
+              function()
+                local params = vim.lsp.util.make_position_params()
+                Util.lsp.execute({
+                  command = "typescript.goToSourceDefinition",
+                  arguments = { params.textDocument.uri, params.position },
+                  open = true,
+                })
+              end,
+              desc = "Goto Source Definition",
+            },
+            {
+              "gR",
+              function()
+                Util.lsp.execute({
+                  command = "typescript.findAllFileReferences",
+                  arguments = { vim.uri_from_bufnr(0) },
+                  open = true,
+                })
+              end,
+              desc = "File References",
+            },
+            {
+              "<leader>to",
+              Util.lsp.action["source.organizeImports"],
+              desc = "Organize Imports",
+            },
+            {
+              "<leader>cM",
+              Util.lsp.action["source.addMissingImports.ts"],
+              desc = "Add missing imports",
+            },
+            {
+              "<leader>cu",
+              Util.lsp.action["source.removeUnused.ts"],
+              desc = "Remove unused imports",
+            },
+            {
+              "<leader>cD",
+              Util.lsp.action["source.fixAll.ts"],
+              desc = "Fix all diagnostics",
+            },
+            {
+              "<leader>cV",
+              function()
+                Util.lsp.execute({ command = "typescript.selectTypeScriptVersion" })
+              end,
+              desc = "Select TS workspace version",
             },
           },
         },
         clangd = {
           filetypes = { "c", "cpp", "objc", "objcpp", "cuda" },
         },
-        tailwindcss = {
-          filetypes = { "javascriptreact", "typescriptreact" },
-        },
+        -- tailwindcss = {
+        --   filetypes = { "javascriptreact", "typescriptreact" },
+        -- },
         lemminx = {},
         marksman = {
           single_file_support = false,
-          root_dir = function(fname)
-            -- Skip floating buffers (LSP Saga code action window in particular)
-            local buf = vim.api.nvim_get_current_buf()
-            local bt = vim.bo[buf].buftype
-            if bt ~= "" or fname == "" then
-              return nil
-            end
-          end,
           filetypes = { "markdown" },
         },
+        prismals = {},
       }
 
       -- Define default options that apply to all servers.
       local default_opts = {
-        root_dir = require("lspconfig").util.root_pattern(".git"),
         capabilities = capabilities,
       }
 
       -- Setup Mason and ensure required tools are installed.
       require("mason").setup()
-      local ensure_installed = vim.tbl_keys(servers or {})
+      local ensure_installed = {}
+      for server_name, server_opts in pairs(servers or {}) do
+        if server_opts ~= false and (type(server_opts) ~= "table" or server_opts.enabled ~= false) then
+          table.insert(ensure_installed, server_name)
+        end
+      end
       vim.list_extend(ensure_installed, { "stylua", "prettier", "black", "roslyn" })
       require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
+
+      local configured = {}
+      local pending_enables ---@type table<string, boolean>?
+
+      local function enable_or_defer(name)
+        if vim.v.vim_did_enter == 1 then
+          vim.lsp.enable(name)
+          return
+        end
+
+        if not pending_enables then
+          pending_enables = {}
+          vim.api.nvim_create_autocmd("VimEnter", {
+            once = true,
+            callback = function()
+              for server in pairs(pending_enables or {}) do
+                vim.lsp.enable(server)
+              end
+              pending_enables = nil
+            end,
+          })
+        end
+
+        pending_enables[name] = true
+      end
+
+      local function setup(server_name)
+        if configured[server_name] then
+          return
+        end
+
+        local server_opts = servers[server_name]
+        if server_opts == false or (type(server_opts) == "table" and server_opts.enabled == false) then
+          return
+        end
+
+        server_opts = server_opts or {}
+        if type(server_opts) == "table" then
+          server_opts = vim.tbl_deep_extend("force", {}, server_opts)
+          server_opts.enabled = nil
+        end
+
+        configured[server_name] = true
+
+        local opts = vim.tbl_deep_extend("force", {}, default_opts, server_opts)
+        vim.lsp.config(server_name, opts)
+
+        if vim.lsp.config[server_name] then
+          enable_or_defer(server_name)
+        else
+          vim.notify(string.format("[lspconfig] unable to resolve LSP config for %s", server_name), vim.log.levels.WARN)
+        end
+      end
+
       require("mason-lspconfig").setup({
         ensure_installed = {},
-        automatic_installation = false,
-        handlers = {
-          function(server_name)
-            local server = servers[server_name] or {}
-            -- This handles overriding only values explicitly passed
-            -- by the server configuration above. Useful when disabling
-            -- certain features of an LSP (for example, turning off formatting for ts_ls)
-            server.capabilities = vim.tbl_deep_extend("force", {}, capabilities, server.capabilities or {})
-            require("lspconfig")[server_name].setup(server)
-          end,
-        },
+        automatic_enable = false,
       })
 
-      -- Setup each server by merging default options with server-specific overrides.
-      require("mason-lspconfig").setup_handlers({
-        function(server_name)
-          local server_opts = servers[server_name] or {}
-          local opts = vim.tbl_deep_extend("force", {}, default_opts, server_opts)
-          require("lspconfig")[server_name].setup(opts)
-        end,
-      })
+      for server_name in pairs(servers) do
+        setup(server_name)
+      end
     end,
   },
 }

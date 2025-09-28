@@ -98,9 +98,9 @@ function M.pretty_path(opts)
       return ""
     end
 
-    path = LazyVim.util.norm(path)
-    local root = LazyVim.root.get({ normalize = true })
-    local cwd = LazyVim.root.cwd()
+    path = Util.util.norm(path)
+    local root = Util.root.get({ normalize = true })
+    local cwd = Util.root.cwd()
 
     if opts.relative == "cwd" and path:find(cwd, 1, true) == 1 then
       path = path:sub(#cwd + 2)
@@ -152,8 +152,8 @@ function M.root_dir(opts)
   }, opts or {})
 
   local function get()
-    local cwd = LazyVim.root.cwd()
-    local root = LazyVim.root.get({ normalize = true })
+    local cwd = Util.root.cwd()
+    local root = Util.root.get({ normalize = true })
     local name = vim.fs.basename(root)
 
     if root == cwd then

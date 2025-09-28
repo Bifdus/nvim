@@ -51,7 +51,7 @@ return {
       local lualine_require = require("lualine_require")
       lualine_require.require = require
 
-      local icons = LazyVim.icons
+      local icons = Util.icons
 
       vim.o.laststatus = vim.g.lualine_laststatus
 
@@ -66,7 +66,7 @@ return {
           lualine_b = { "branch" },
 
           lualine_c = {
-            LazyVim.lualine.root_dir(),
+            Util.lualine.root_dir(),
             {
               "diagnostics",
               symbols = {
@@ -77,7 +77,7 @@ return {
               },
             },
             { "filetype", icon_only = true, separator = "", padding = { left = 1, right = 0 } },
-            { LazyVim.lualine.pretty_path() },
+            { Util.lualine.pretty_path() },
           },
           lualine_x = {
             Snacks.profiler.status(),
@@ -139,7 +139,7 @@ return {
 
       -- do not add trouble symbols if aerial is enabled
       -- And allow it to be overriden for some buffer types (see autocmds)
-      if vim.g.trouble_lualine and LazyVim.has("trouble.nvim") then
+      if vim.g.trouble_lualine and Util.has("trouble.nvim") then
         local trouble = require("trouble")
         local symbols = trouble.statusline({
           mode = "symbols",
@@ -273,9 +273,10 @@ return {
       end)
 
       -- Align cursor columns.
-      vim.keymap.set("n", "<leader>a", mc.alignCursors)
+      vim.keymap.set("n", "<leader>A", mc.alignCursors)
 
       -- Split visual selections by regex.
+      -- TODO: Find appropriate mapping (currently conflicts with flash treesitter)
       vim.keymap.set("v", "S", mc.splitCursors)
 
       -- Append/insert for each line of visual selections.
@@ -354,10 +355,31 @@ return {
       },
     },
     keys = {
-      { "s", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
-      { "S", mode = { "n", "x", "o" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
-      { "us", mode = { "c" }, function() require("flash").toggle() end, desc = "Toggle Flash Search" },
-    }
+      {
+        "s",
+        mode = { "n", "x", "o" },
+        function()
+          require("flash").jump()
+        end,
+        desc = "Flash",
+      },
+      {
+        "S",
+        mode = { "n", "x", "o" },
+        function()
+          require("flash").treesitter()
+        end,
+        desc = "Flash Treesitter",
+      },
+      {
+        "us",
+        mode = { "c" },
+        function()
+          require("flash").toggle()
+        end,
+        desc = "Toggle Flash Search",
+      },
+    },
   },
 
   { "ethanholz/nvim-lastplace", opts = {} },

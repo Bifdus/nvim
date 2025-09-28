@@ -238,7 +238,7 @@ return {
       markdown = true,
     },
     config = function(_, opts)
-      LazyVim.mini.pairs(opts)
+      Util.mini.pairs(opts)
     end,
   },
   {
@@ -280,7 +280,7 @@ return {
             },
             "^().*()$",
           },
-          g = LazyVim.mini.ai_buffer, -- buffer
+          g = Util.mini.ai_buffer, -- buffer
           u = ai.gen_spec.function_call(), -- u for "Usage"
           U = ai.gen_spec.function_call({ name_pattern = "[%w_]" }), -- without dot in function name
         },
@@ -289,7 +289,7 @@ return {
     config = function(_, opts)
       require("mini.ai").setup(opts)
       vim.schedule(function()
-        LazyVim.mini.ai_whichkey(opts)
+        Util.mini.ai_whichkey(opts)
       end)
     end,
   },
@@ -318,10 +318,10 @@ return {
       "ExercismTest",
     },
     keys = {
-      { "<leader>lxa", "<cmd>ExercismList<CR>", desc = "Exercism All exercises" },
-      { "<leader>lxl", "<cmd>ExercismLanguages<CR>", desc = "Exercism Languages" },
-      { "<leader>lxt", "<cmd>ExercismTest<CR>", desc = "ExercismTest" },
-      { "<leader>lxs", "<cmd>ExercismSubmit<CR>", desc = "ExercismSubmit" },
+      { "<leader>lxa", "<cmd>Exercism list<CR>", desc = "Exercism All exercises" },
+      { "<leader>lxl", "<cmd>Exercism languages<CR>", desc = "Exercism Languages" },
+      { "<leader>lxt", "<cmd>Exercism test<CR>", desc = "ExercismTest" },
+      { "<leader>lxs", "<cmd>Exercism submit<CR>", desc = "ExercismSubmit" },
     },
     dependencies = {
       {
@@ -380,7 +380,7 @@ return {
       { "nvim-lua/plenary.nvim", branch = "master" },
     },
     event = "VeryLazy",
-    enabled = true,
+    enabled = false,
     build = "make tiktoken",
     opts = {
       auto_insert = true,
