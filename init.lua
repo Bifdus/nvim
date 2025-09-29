@@ -11,14 +11,11 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
 end ---@diagnostic disable-next-line: undefined-field
 vim.opt.rtp:prepend(lazypath)
 
-_G.Core = require("core")
-
 -- [[ Configure and install plugins ]]
 require("lazy").setup({
   spec = {
-    { import = "plugins.lsp" },
-    { import = "plugins.lang" },
     { import = "plugins" },
+    { import = "plugins.lang" },
     "NMAC427/guess-indent.nvim",
   },
   change_detection = {
@@ -26,6 +23,7 @@ require("lazy").setup({
     notify = false,
   },
 }, {})
+require("lsp")
 
 require("keymaps")
 require("autocmds")
