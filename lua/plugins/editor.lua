@@ -414,10 +414,11 @@ return {
   {
     "windwp/nvim-autopairs",
     event = "InsertEnter",
-    enabled = false,
+    enabled = true,
     opts = {
       enable_check_bracket_line = true,
       check_ts = true,
+      map_cr = true,
     },
     config = function(_, opts)
       require("nvim-autopairs").setup(opts)

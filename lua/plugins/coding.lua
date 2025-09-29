@@ -80,6 +80,7 @@ return {
   {
     "nvimdev/lspsaga.nvim",
     event = { "LspAttach" },
+    enable = false,
     opts = {
       lightbulb = {
         enable = false,
@@ -224,7 +225,7 @@ return {
   {
     "echasnovski/mini.pairs",
     event = "InsertEnter",
-    enabled = true,
+    enabled = false,
     opts = {
       modes = { insert = true, command = true, terminal = false },
       -- skip autopair when next character is one of these

@@ -107,6 +107,7 @@ return {
           },
           { name = "nvim_lsp" },
           { name = "luasnip" },
+          { name = "buffer" },
           { name = "path" },
           { name = "orgmode" },
           { name = "render-markdown" },
@@ -116,6 +117,24 @@ return {
           { name = "lua-latex-symbols" },
         },
       })
+      local cmp_autopairs = require("nvim-autopairs.completion.cmp")
+      cmp.event:on(
+        "confirm_done",
+        cmp_autopairs.on_confirm_done({
+          filetypes = {
+            ["*"] = {
+              ["("] = {
+                -- include Variable so arrow-function consts get ()
+                kind = {
+                  cmp.lsp.CompletionItemKind.Function,
+                  cmp.lsp.CompletionItemKind.Method,
+                  cmp.lsp.CompletionItemKind.Variable,
+                },
+              },
+            },
+          },
+        })
+      )
     end,
   },
 }
