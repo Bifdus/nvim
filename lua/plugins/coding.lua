@@ -80,7 +80,7 @@ return {
   {
     "nvimdev/lspsaga.nvim",
     event = { "LspAttach" },
-    enable = false,
+    enable = true,
     opts = {
       lightbulb = {
         enable = false,
