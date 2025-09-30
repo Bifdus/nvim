@@ -22,9 +22,6 @@ return {
           vim.tbl_deep_extend("force", {}, opts.settings.typescript or {}, opts.settings.javascript or {})
       end
 
-      local map = function(lhs, rhs, desc)
-        vim.keymap.set("n", lhs, rhs, { buffer = bufnr, silent = true, noremap = true, desc = desc })
-      end
       local function run_source_action(kind)
         vim.lsp.buf.code_action({
           apply = true,
@@ -32,10 +29,10 @@ return {
         })
       end
     -- stylua: ignore start
-    map("<leader>to", function() run_source_action("source.organizeImports") end, "TS: Organize Imports")
-    map("<leader>ta", function() run_source_action("source.addMissingImports.ts") end, "TS: Add Missing Imports")
-    map("<leader>tr", function() run_source_action("source.removeUnused.ts") end, "TS: Remove Unused Imports")
-    map("<leader>tf", function() run_source_action("source.fixAll.ts") end, "TS: Fix All")
+    map("n", "<leader>to", function() run_source_action("source.organizeImports") end, "TS: Organize Imports")
+    map('n', "<leader>ta", function() run_source_action("source.addMissingImports.ts") end, "TS: Add Missing Imports")
+    map('n', "<leader>tr", function() run_source_action("source.removeUnused.ts") end, "TS: Remove Unused Imports")
+    map('n', "<leader>tf", function() run_source_action("source.fixAll.ts") end, "TS: Fix All")
     end
   end,
 }
