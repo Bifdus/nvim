@@ -524,5 +524,5 @@ return {
 
   -----------------------------------------------------------------------------
   -- Improved word navigation
-  { "chrisgrieser/nvim-spider", lazy = false },
+  { "chrisgrieser/nvim-spider", lazy = false, enabled = false },
 }
