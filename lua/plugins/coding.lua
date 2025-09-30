@@ -216,7 +216,7 @@ return {
     priority = 1000,
     config = function()
       require("tiny-inline-diagnostic").setup()
-      vim.diagnostic.config({ virtual_text = false, virtual_lines = false })
+      vim.diagnostic.config({ virtual_text = true, virtual_lines = false })
     end,
   },
 

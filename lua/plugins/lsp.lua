@@ -34,6 +34,16 @@ return {
     "j-hui/fidget.nvim",
     opts = {},
   },
-
-
+  {
+    "WhoIsSethDaniel/mason-tool-installer.nvim",
+    lazy = false,
+    config = function()
+      require("mason").setup()
+      local names = Util.lsp
+      require("mason-tool-installer").setup({
+        ensure_installed = names.ensure_list(),
+        run_on_start = true,
+      })
+    end,
+  },
 }

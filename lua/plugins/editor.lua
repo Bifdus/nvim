@@ -425,6 +425,8 @@ return {
     end,
   },
 
+  { "m4xshen/autoclose.nvim", enabled = false, event = "InsertEnter", opts = {} },
+
   -- DEV
 
   --- Better Visual for help files
