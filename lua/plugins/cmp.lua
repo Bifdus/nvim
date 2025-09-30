@@ -2,7 +2,7 @@ return {
   { -- Autocompletion
     "hrsh7th/nvim-cmp",
     event = "InsertEnter",
-    enabled = false,
+    enabled = true,
     dependencies = {
       -- Snippet Engine & its associated nvim-cmp source
       {
@@ -117,24 +117,6 @@ return {
           { name = "lua-latex-symbols" },
         },
       })
-      local cmp_autopairs = require("nvim-autopairs.completion.cmp")
-      cmp.event:on(
-        "confirm_done",
-        cmp_autopairs.on_confirm_done({
-          filetypes = {
-            ["*"] = {
-              ["("] = {
-                -- include Variable so arrow-function consts get ()
-                kind = {
-                  cmp.lsp.CompletionItemKind.Function,
-                  cmp.lsp.CompletionItemKind.Method,
-                  cmp.lsp.CompletionItemKind.Variable,
-                },
-              },
-            },
-          },
-        })
-      )
     end,
   },
 }
