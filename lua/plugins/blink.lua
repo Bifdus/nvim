@@ -56,10 +56,10 @@ return {
       sources = {
         default = { "lsp", "path", "snippets", "lazydev" },
         per_filetype = {
-          lua = {inherit_defaults = true, "lazydev"},
+          lua = { inherit_defaults = true, "lazydev" },
         },
         providers = {
-          lazydev = { name= 'LazyDev', module = "lazydev.integrations.blink", score_offset = 100 },
+          lazydev = { name = "LazyDev", module = "lazydev.integrations.blink", score_offset = 100 },
         },
       },
 

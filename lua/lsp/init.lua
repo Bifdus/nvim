@@ -7,7 +7,7 @@ vim.diagnostic.config({
   underline = false,
   update_in_insert = false,
   severity_sort = true,
-  -- TODO: handled by tiny diagnostic inlay hinds
+  -- TODO: handled by tiny diagnostic inlay hints, need to decide what's best
   -- virtual_text = {
   --   source = "if_many",
   --   spacing = 2,

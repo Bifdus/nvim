@@ -4,6 +4,8 @@ M.lsp_to_mason = {
   lua_ls = "lua-language-server",
   vtsls = "vtsls",
   basedpyright = "basedpyright",
+  yamlls = "yaml-language-server",
+  clangd = "clangd",
 }
 
 M.extra_tools = {

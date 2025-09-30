@@ -1,4 +1,6 @@
 -- TODO: Make this re-useable
+-- Required as eslint overlaps diagnostic warnings/errors with tsserver.
+-- community recommends to use eslint over tsserver
 local M = {}
 
 M.ignore_codes = {
