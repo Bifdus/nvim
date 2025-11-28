@@ -107,7 +107,7 @@ return {
   },
   --stylua: ignore
   keys = {
-    { "<c-\\>",      function() Snacks.terminal() end, desc = "Toggle Terminal"},
+    -- { "<c-\\>",      function() Snacks.terminal() end, desc = "Toggle Terminal"},
     { "<leader>.",  function() Snacks.scratch() end, desc = "Toggle Scratch Buffer" },
     { "<leader>S",  function() Snacks.scratch.select() end, desc = "Select Scratch Buffer" },
     { "<leader><space>", function() Snacks.picker.smart() end, desc = "Smart Find Files" },
@@ -124,7 +124,7 @@ return {
     { "<leader>fp", function() Snacks.picker.projects() end, desc = "Projects" },
     { "<leader>fr", function() Snacks.picker.recent() end, desc = "Recent" },
     -- explorer
-    { "<leader>e", function() Snacks.picker.explorer() end, desc = "Explorer" },
+    { "<leader>\\", function() Snacks.picker.explorer() end, desc = "Explorer" },
     -- { "<leader>e", function() Snacks.picker.explorer() end, desc = "Explorer" },
     { "<leader>E", function() Snacks.picker.explorer({cwd = Util.root.cwd()}) end, desc = "Explorer" },
     -- git
