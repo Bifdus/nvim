@@ -112,3 +112,5 @@ vim.opt.fillchars = {
 }
 
 vim.o.formatexpr = "v:lua.require'conform'.formatexpr()"
+
+vim.g.tmux_navigator_no_mappings = 1
