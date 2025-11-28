@@ -319,10 +319,10 @@ return {
       "ExercismTest",
     },
     keys = {
-      { "<leader>lxa", "<cmd>Exercism list<CR>", desc = "Exercism All exercises" },
-      { "<leader>lxl", "<cmd>Exercism languages<CR>", desc = "Exercism Languages" },
-      { "<leader>lxt", "<cmd>Exercism test<CR>", desc = "ExercismTest" },
-      { "<leader>lxs", "<cmd>Exercism submit<CR>", desc = "ExercismSubmit" },
+      { "<leader>exa", "<cmd>Exercism list<CR>", desc = "Exercism All exercises" },
+      { "<leader>exl", "<cmd>Exercism languages<CR>", desc = "Exercism Languages" },
+      { "<leader>ext", "<cmd>Exercism test<CR>", desc = "ExercismTest" },
+      { "<leader>exs", "<cmd>Exercism submit<CR>", desc = "ExercismSubmit" },
     },
     dependencies = {
       {
