@@ -419,7 +419,7 @@ return {
   {
     "windwp/nvim-autopairs",
     event = "InsertEnter",
-    enabled = true,
+    enabled = false,
     opts = {
       enable_check_bracket_line = true,
       check_ts = true,
