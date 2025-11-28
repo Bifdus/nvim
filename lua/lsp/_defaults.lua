@@ -11,7 +11,7 @@ return {
     map("n", "<leader>rn", "<cmd>Lspsaga rename<CR>", "[R]e[n]ame")
     map({ "n", "x" }, "<leader>ca", "<cmd>Lspsaga code_action<CR>", "[C]ode [A]ction")
     map("n", "K", "<cmd>Lspsaga hover_doc<CR>", "Hover Documentation")
-    map("n", "<c-k>", "<cmd>Lspsaga peek_type_definition<CR>", "Type [D]efinition")
+    map("n", "<leader>pd", "<cmd>Lspsaga peek_definition<CR>", "Peek [D]efinition")
 
     -- VTSLS
     if client and client.name == "vtsls" then
