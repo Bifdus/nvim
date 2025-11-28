@@ -270,6 +270,14 @@ return {
     },
   },
 
+  {
+    "bngarren/checkmate.nvim",
+    ft = "markdown",
+    opts = {
+      -- files = { "*.md" }, -- any .md file (instead of defaults)
+    },
+  },
+
   -- {
   --   'nvim-neorg/neorg',
   --   lazy = false, -- Disable lazy loading as some `lazy.nvim` distributions set `lazy = true` by default
