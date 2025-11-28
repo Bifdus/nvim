@@ -409,7 +409,12 @@ return {
       },
     },
   },
-
+  {
+    "altermo/ultimate-autopair.nvim",
+    event = { "InsertEnter", "CmdlineEnter" },
+    branch = "v0.6", --recommended as each new version will have breaking changes
+    opts = {},
+  },
   -- auto pairs
   {
     "windwp/nvim-autopairs",
@@ -525,4 +530,30 @@ return {
   -----------------------------------------------------------------------------
   -- Improved word navigation
   { "chrisgrieser/nvim-spider", lazy = false, enabled = false },
+
+  {
+    "christoomey/vim-tmux-navigator",
+    cmd = {
+      "TmuxNavigateLeft",
+      "TmuxNavigateDown",
+      "TmuxNavigateUp",
+      "TmuxNavigateRight",
+      "TmuxNavigatePrevious",
+      "TmuxNavigatorProcessList",
+    },
+    keys = {
+      { "<C-l>", "<cmd>TmuxNavigateLeft<cr>" },
+      { "<C-k>", "<cmd>TmuxNavigateDown<cr>" },
+      { "<C-j>", "<cmd>TmuxNavigateUp<cr>" },
+      { "<C-h>", "<cmd>TmuxNavigateRight<cr>" },
+      { "<c-\\>", "<cmd>TmuxNavigatePrevious<cr>" },
+    },
+  },
+
+  -----------------------------------------------------------------------------
+  -- Case Handling
+  {
+    "tpope/vim-abolish",
+    event = "BufReadPre",
+  },
 }

@@ -13,12 +13,6 @@ vim.keymap.set({ "n", "x" }, "S", "<Nop>")
 vim.keymap.set({ "n", "x" }, "<Down>", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true, desc = "Down" })
 vim.keymap.set({ "n", "x" }, "<Up>", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true, desc = "Up" })
 
--- Repurpose hjkl for window switching
-vim.keymap.set("n", "l", "<c-w>h", { noremap = true })
-vim.keymap.set("n", "h", "<c-w>l", { noremap = true })
-vim.keymap.set("n", "j", "<c-w>k", { noremap = true })
-vim.keymap.set("n", "k", "<c-w>j", { noremap = true })
-
 -----------------------------------------------------------------------------
 
 -- Shift tab to dedent
@@ -186,3 +180,4 @@ vim.keymap.set("n", "<leader>li", "<cmd>checkhealth vim.lsp<CR>", { desc = "Lsp 
 vim.keymap.set("n", "<leader>ct", function()
   require("copilot.suggestion").toggle_auto_trigger()
 end, { desc = "Toggle Copilot Ghost Text" })
+
