@@ -110,3 +110,5 @@ vim.opt.fillchars = {
   vertright = "┣",
   verthoriz = "╋",
 }
+
+vim.o.formatexpr = "v:lua.require'conform'.formatexpr()"
