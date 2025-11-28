@@ -6,6 +6,7 @@ M.lsp_to_mason = {
   basedpyright = "basedpyright",
   yamlls = "yaml-language-server",
   clangd = "clangd",
+  ruff = "ruff"
 }
 
 M.extra_tools = {

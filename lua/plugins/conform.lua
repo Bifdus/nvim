@@ -61,6 +61,7 @@ return {
         json = { "prettierd", "prettier" },
         yaml = { "prettierd", "prettier" },
         sql = { "sqlfluff" },
+        xml = {"xmlformat"}
       },
     },
   },
