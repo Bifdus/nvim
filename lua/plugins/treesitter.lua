@@ -12,6 +12,7 @@ return {
     },
     main = "nvim-treesitter.configs",
     opts = {
+      ensure_installed = { "lua", "python", "typescript", "javascript", "xml", "json", "sql", "cpp", "c", "c_sharp", "bash", "cmake", "csv", "markdown", "yaml"},
       ignore_install = { "org" },
       auto_install = true,
       highlight = {
@@ -27,7 +28,6 @@ return {
       require("rainbow-delimiters.setup").setup({
         query = {
           [""] = "rainbow-delimiters",
-          latex = "rainbow-blocks",
         },
       })
     end,
