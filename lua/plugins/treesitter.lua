@@ -3,6 +3,7 @@ return {
   -- Highlight, edit, navigate code
   {
     "nvim-treesitter/nvim-treesitter",
+    branch = "master",
     event = "BufReadPost",
     build = ":TSUpdate",
     dependencies = {
