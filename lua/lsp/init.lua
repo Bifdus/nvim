@@ -31,7 +31,7 @@ vim.diagnostic.config({
   } or {},
   float = { border = "rounded", source = "if_many" },
 })
-local servers = { "lua_ls", "vtsls", "basedpyright", "ruff", "clangd" }
+local servers = { "lua_ls", "vtsls", "basedpyright", "ruff", "clangd", "tailwind" }
 
 require("lsp.ts_filter").filter_diagnostic_overlap()
 
