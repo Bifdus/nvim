@@ -22,7 +22,6 @@ return {
           },
         },
       },
-      { "kdheepak/cmp-latex-symbols" },
       "saadparwaiz1/cmp_luasnip",
 
       "hrsh7th/cmp-nvim-lsp",
@@ -112,9 +111,6 @@ return {
           { name = "orgmode" },
           { name = "render-markdown" },
           { name = "vimtex" },
-          { name = "latex_symbols" },
-          { name = "latex_symbol" },
-          { name = "lua-latex-symbols" },
         },
       })
     end,
