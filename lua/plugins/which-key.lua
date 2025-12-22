@@ -52,8 +52,6 @@ return {
         { "<leader>g", group = "[G]it", icon = { icon = "", color = "green" } },
         { "<leader>gc", group = "[G]it [C]onflict", icon = { icon = "", color = "green" } },
         { "<leader>cl", group = "[C]hainsaw [L]og", icon = { icon = "🪚", color = "green" } },
-        { "<leader>o", group = "[O]rgmode", icon = { icon = "", color = "green" } },
-        { "<leader>o", group = "[O]rgmode", icon = { icon = "", color = "green" } },
         { "<leader>p", group = "[P]icker (Colors)", icon = { icon = "", color = "green" } },
         { "<leader>q", group = "[Q]uit" },
         { "<leader>s", group = "[S]earch", icon = { icon = "", color = "green" } },
