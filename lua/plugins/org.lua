@@ -70,14 +70,14 @@ return {
     },
     opts = {
       org_agenda_files = {
-        "~/orgfiles/second-brain/work/**/*", -- work todo
-        "~/orgfiles/second-brain/personal/**/*", -- personal todo
+        "~/orgfiles/second-brain/work/**/*.org", -- work todo
+        "~/orgfiles/second-brain/personal/**/*.org", -- personal todo
       },
       org_default_notes_file = "~/orgfiles/refile.org",
 
       org_archive_location = "~/orgfiles/archive.org::",
 
-      -- org_agenda_span = 14,
+      org_agenda_span = 14,
       --
       org_agenda_start_on_weekday = 1,
 
@@ -94,11 +94,11 @@ return {
           types = {
             {
               type = "agenda",
-              org_agenda_files = { "~/orgfiles/second-brain/work/**/*" },
+              org_agenda_files = { "~/orgfiles/second-brain/work/**/*.org" },
             },
             {
               type = "tags_todo",
-              org_agenda_files = { "~/orgfiles/second-brain/work/**/*" },
+              org_agenda_files = { "~/orgfiles/second-brain/work/**/*.org" },
             },
           },
         },
@@ -107,11 +107,11 @@ return {
           types = {
             {
               type = "agenda",
-              org_agenda_files = { "~/orgfiles/second-brain/personal/**/*" },
+              org_agenda_files = { "~/orgfiles/second-brain/personal/**/*.org" },
             },
             {
               type = "tags_todo",
-              org_agenda_files = { "~/orgfiles/second-brain/personal/**/*" },
+              org_agenda_files = { "~/orgfiles/second-brain/personal/**/*.org" },
             },
           },
         },
@@ -246,25 +246,25 @@ return {
             i = {
               description = "Raw Idea",
               template = "* %? :IDEA:RAW:",
-              target = "~/orgfiles/work/second-brain/ideas/inbox.org",
+              target = "~orgfiles/second-brain/work/ideas/inbox.org",
               properties = { empty_lines = { before = 1 } },
             },
             p = {
               description = "Project",
               template = "* %? :IDEA:PROJECT:",
-              target = "~/orgfiles/work/second-brain/ideas/project.org",
+              target = "~orgfiles/second-brain/work/ideas/project.org",
               properties = { empty_lines = { before = 1 } },
             },
             a = {
               description = "Application",
               template = "* %? :IDEA:APPLICATION:",
-              target = "~/orgfiles/work/second-brain/ideas/application.org",
+              target = "~/orgfiles/second-brain/work/ideas/application.org",
               properties = { empty_lines = { before = 1 } },
             },
             n = {
               description = "Neovim",
               template = "* %? :IDEA:NEOVIM:",
-              target = "~/orgfiles/work/second-brain/ideas/neovim.org",
+              target = "~orgfiles/second-brain/work/ideas/neovim.org",
               properties = { empty_lines = { before = 1 } },
             },
             w = {
@@ -281,7 +281,7 @@ return {
           subtemplates = {
             p = {
               description = "Personal",
-              template = "* TODO %? :TASK:\n  SCHEDULED: %U DEADLINE: %t",
+              template = "* TODO %? :TASK:PERSONAL\n  SCHEDULED: %U DEADLINE: %t",
               target = "~/orgfiles/second-brain/personal/agenda/todos.org",
               properties = { empty_lines = { before = 1 } },
             },
@@ -531,11 +531,10 @@ return {
   },
   {
     "chipsenkbeil/org-roam.nvim",
-    tag = "0.1.1",
+    tag = "0.2.0",
     dependencies = {
       {
         "nvim-orgmode/orgmode",
-        tag = "0.3.7",
       },
     },
     keys = {
@@ -617,6 +616,10 @@ return {
         exclude_files = {
           E("~orgfiles/archive.org"),
         },
+        popup_mode = {
+          enabled = false,
+          hide_command = nil, -- e.g., "tmux detach-client"
+        },
         -- todo_states = {
         --   {
         --     name = "BACKLOG",
@@ -696,6 +699,8 @@ return {
         --     fields = { "filename", "todo", "headline", "priority", "date", "tags" },
         --   },
         -- },
+        hide_empty_groups = false,
+        show_other_groups = true,
         groups = {
           {
             name = "📅 Today",
