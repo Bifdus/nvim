@@ -1,61 +1,4 @@
 return {
-  -----------------------------------------------------------------------------
-  -- Note taking and todo list
-  {
-    "nvim-orgmode/orgmode",
-    event = "VeryLazy",
-    config = function()
-      -- Setup orgmode
-      require("orgmode").setup({
-        calendar = { round_min_with_hours = true, min_big_step = 15, min_small_step = 1 },
-        org_use_property_inheritance = true,
-        org_log_repeat = "time",
-        org_id_method = "ts",
-        org_agenda_span = "week",
-        org_agenda_files = "~/orgfiles/**/*",
-        org_archive_location = "~/orgfiles/archive.org::/From %s",
-        org_default_notes_file = "~/orgfiles/refile.org",
-        org_refile_target_files = "~/orgfiles/archive.org",
-        win_split_mode = "vertical",
-        mappings = {
-          capture = { org_capture_finalize = "<C-s>" },
-          note = { org_note_finalize = "<C-s>" },
-          global = {
-            org_agenda = "<leader>oa",
-            org_capture = "<leader>oc",
-          },
-        },
-        org_capture_templates = {
-          t = { description = "Task → Inbox", template = "* TODO %?\n  %u", target = "~/orgfiles/refile.org" },
-          n = { description = "Note → Inbox", template = "* %?\n  %u", target = "~/orgfiles/refile.org" },
-          m = {
-            description = "Meeting note (dated)",
-            target = "~/orgfiles/meetings.org",
-            template = "* %? %<%Y-%m-%d>\n:PROPERTIES:\n:ATTENDEES:\n:END:\n%u\n",
-          },
-        },
-      })
-    end,
-  },
-  {
-    "chipsenkbeil/org-roam.nvim",
-    lazy = false,
-    dependencies = {
-      "nvim-orgmode/orgmode",
-    },
-    config = function()
-      require("org-roam").setup({
-        database = {
-          update_on_save = true,
-          persist = true,
-        },
-        directory = "~/orgfiles/roam",
-        -- Same folder as orgmode for backlinks to orgmode files
-        org_files = { "~/orgfiles/**/*" },
-      })
-    end,
-  },
-
   {
     "obsidian-nvim/obsidian.nvim",
     version = "*",
@@ -170,26 +113,6 @@ return {
       -- vim.wo.conceallevel = 1
     end,
   },
-  {
-    "hamidi-dev/org-list.nvim",
-    dependencies = {
-      "tpope/vim-repeat", -- for repeatable actions with '.'
-    },
-    config = function()
-      require("org-list").setup({
-        mapping = {
-          key = "<leader>lt",
-          desc = "Toggle: Cycle through list types",
-        },
-        checkbox_toggle = {
-          enabled = true,
-          key = "tc",
-          desc = "Toggle checkbox state",
-          filetypes = { "org", "markdown" },
-        },
-      })
-    end,
-  },
 
   {
     "lukas-reineke/headlines.nvim",
@@ -270,13 +193,13 @@ return {
     },
   },
 
-  {
-    "bngarren/checkmate.nvim",
-    ft = "markdown",
-    opts = {
-      -- files = { "*.md" }, -- any .md file (instead of defaults)
-    },
-  },
+  -- {
+  --   "bngarren/checkmate.nvim",
+  --   ft = "markdown",
+  --   opts = {
+  --     -- files = { "*.md" }, -- any .md file (instead of defaults)
+  --   },
+  -- },
 
   -- {
   --   'nvim-neorg/neorg',
@@ -350,26 +273,6 @@ return {
   --     }
   --     vim.wo.foldlevel = 90
   --     vim.wo.conceallevel = 2
-  --   end,
-  -- },
-  -- {
-  --   'akinsho/org-bullets.nvim',
-  --   ft = 'org',
-  --   config = function()
-  --     require('org-bullets').setup {
-  --       concealcursor = false, -- If false then when the cursor is on a line underlying characters are visible
-  --       symbols = {
-  --         -- list symbol
-  --         list = '•',
-  --         -- headlines can be a list
-  --         headlines = { '◉', '○', '✸', '✿' },
-  --         checkboxes = {
-  --           half = { '', '@org.checkbox.halfchecked' },
-  --           done = { '✓', '@org.keyword.done' },
-  --           todo = { '˟', '@org.keyword.todo' },
-  --         },
-  --       },
-  --     }
   --   end,
   -- },
 }
