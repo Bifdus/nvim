@@ -281,7 +281,7 @@ return {
           subtemplates = {
             p = {
               description = "Personal",
-              template = "* TODO %? :TASK:PERSONAL\n  SCHEDULED: %U DEADLINE: %t",
+              template = "* TODO %? :TASK:PERSONAL:\n  SCHEDULED: %U DEADLINE: %t",
               target = "~/orgfiles/second-brain/personal/agenda/todos.org",
               properties = { empty_lines = { before = 1 } },
             },
@@ -665,28 +665,28 @@ return {
         --   },
         --   {
         --     name = "WAITING",
-        --     keymap = "ow",
+        --     keymap = "oW",
         --     color = "#ff5faf",
         --     strike_through = false,
         --     fields = { "filename", "todo", "headline", "priority", "date", "tags" },
         --   },
         --   {
         --     name = "ON-HOLD",
-        --     keymap = "oh",
+        --     keymap = "oH",
         --     color = "#d7aaff",
         --     strike_through = false,
         --     fields = { "filename", "todo", "headline", "priority", "date", "tags" },
         --   },
         --   {
         --     name = "DONE",
-        --     keymap = "od",
+        --     keymap = "oD",
         --     color = "#5fff5f",
         --     strike_through = true,
         --     fields = { "filename", "todo", "headline", "priority", "date", "tags" },
         --   },
         --   {
         --     name = "CANCELLED",
-        --     keymap = "oc",
+        --     keymap = "oC",
         --     color = "#585858",
         --     strike_through = true,
         --     fields = { "filename", "todo", "headline", "priority", "date", "tags" },
