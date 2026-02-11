@@ -530,7 +530,16 @@ return {
     end,
   },
   {
+    "nvim-telekasten/telekasten.nvim",
+    dependencies = {'nvim-telescope/telescope.nvim'},
+    config = function()
+      require("telekasten").setup({ home = vim.fn.expand("~/orgfiles/second-brain/personal")})
+    end,
+  },
+
+  {
     "chipsenkbeil/org-roam.nvim",
+    enabled = false,
     tag = "0.2.0",
     dependencies = {
       {
