@@ -17,6 +17,7 @@ return {
       { 'nvim-telescope/telescope-project.nvim' },
       { 'polirritmico/telescope-lazy-plugins.nvim' },
       { 'debugloop/telescope-undo.nvim' },
+      {'nvim-telescope/telescope-symbols.nvim'},
       {
         'rcarriga/nvim-notify',
         config = function()
@@ -51,9 +52,10 @@ return {
       pcall(require('telescope').load_extension, 'ui-select')
       pcall(require('telescope').load_extension, 'file_browser')
       pcall(require('telescope').load_extension, 'project')
-      pcall(require("telescope").load_extension("lazy_plugins"))
+      pcall(require("telescope").load_extension, "lazy_plugins")
       pcall(require('telescope').load_extension, 'undo')
       pcall(require('telescope').load_extension, 'notify')
+      pcall(require('telescope').load_extension, 'telescope-symbols')
 
       -- See `:help telescope.builtin`
       local builtin = require 'telescope.builtin'
@@ -138,10 +140,10 @@ return {
       vim.keymap.set('n', '<leader>sn', extensions.notify.notify, { desc = 'Notification History' })
       vim.keymap.set('n', '<leader>sp', extensions.lazy_plugins.lazy_plugins, { desc = 'Search for Plugin Spec' })
       vim.keymap.set('n', '<leader>sq', builtin.quickfix, { desc = 'Quickfix List' })
+      vim.keymap.set('n', '<leader>sS', function() builtin.symbols{ sources = {'emoji'}} end, { desc = "Search Symbols" } )
       vim.keymap.set('n', '<leader>su', extensions.undo.undo, { desc = 'Undo History' })
       vim.keymap.set('n', '<leader>uC', builtin.colorscheme, { desc = 'Colorschemes' })
       vim.keymap.set('n', 'gd', builtin.lsp_definitions, { desc = 'Goto Definition' })
-      vim.keymap.set('n', 'gD', builtin.lsp_declarations, { desc = 'Goto Declaration' })
       vim.keymap.set('n', 'gr', builtin.lsp_references, { desc = 'References' })
       vim.keymap.set('n', 'gI', builtin.lsp_implementations, { desc = 'Goto Implementation' })
       vim.keymap.set('n', 'gy', builtin.lsp_type_definitions, { desc = 'Goto Type Definition' })
