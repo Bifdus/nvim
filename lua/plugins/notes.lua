@@ -162,6 +162,8 @@ return {
       "nvim-tree/nvim-web-devicons",
     },
     config = function()
+      -- Treat Telekasten buffers as markdown for treesitter-based renderers.
+      vim.treesitter.language.register("markdown", "telekasten")
       require("render-markdown").setup({
         auto_open = true,
         auto_close = true,
@@ -187,7 +189,7 @@ return {
       })
     end,
     -- Optional: Lazy-load based on file type
-    ft = { "markdown", "md" },
+    ft = { "markdown", "md", "telekasten" },
     keys = {
       { "<leader>rm", "<cmd>RenderMarkdown<CR>", desc = "Render Markdown" },
     },
