@@ -58,6 +58,7 @@ return {
         { "<leader>u", group = "[T]oggle", icon = { icon = "", color = "green" } },
         { "<leader>w", group = "[W]indow", icon = { icon = "", color = "green" } },
         { "<leader>x", group = "Trouble Diagnostics" },
+        { "<leader>z", group = "Telekasten" },
       },
     },
   },
