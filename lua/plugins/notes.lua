@@ -2,115 +2,683 @@ return {
   {
     "obsidian-nvim/obsidian.nvim",
     version = "*",
-    enabled = false,
-    lazy = true,
+    ft = "markdown",
     dependencies = {
       "nvim-lua/plenary.nvim",
     },
-
     keys = {
-      { "<leader>ond", ":ObsidianToday<cr>", desc = "obsidian [d]aily" },
-      { "<leader>ont", ":ObsidianToday 1<cr>", desc = "obsidian [t]omorrow" },
-      { "<leader>ony", ":ObsidianToday -1<cr>", desc = "obsidian [y]esterday" },
-      { "<leader>onb", ":ObsidianBacklinks<cr>", desc = "obsidian [b]acklinks" },
-      { "<leader>onl", ":ObsidianLink<cr>", desc = "obsidian [l]ink selection" },
-      { "<leader>onf", ":ObsidianFollowLink<cr>", desc = "obsidian [f]ollow link" },
-      { "<leader>onn", ":ObsidianNew<cr>", desc = "obsidian [n]ew" },
-      { "<leader>ons", ":ObsidianSearch<cr>", desc = "obsidian [s]earch" },
-      { "<leader>ono", ":ObsidianQuickSwitch<cr>", desc = "obsidian [o]pen quickswitch" },
-      { "<leader>onO", ":ObsidianOpen<cr>", desc = "obsidian [O]pen in app" },
+      { "<leader>ond", "<cmd>Obsidian today<cr>", desc = "obsidian daily" },
+      { "<leader>ont", "<cmd>Obsidian today 1<cr>", desc = "obsidian tomorrow" },
+      { "<leader>ony", "<cmd>Obsidian today -1<cr>", desc = "obsidian yesterday" },
+      { "<leader>onb", "<cmd>Obsidian backlinks<cr>", desc = "obsidian backlinks" },
+      { "<leader>onl", "<cmd>Obsidian link<cr>", desc = "obsidian link selection" },
+      { "<leader>onf", "<cmd>Obsidian follow_link<cr>", desc = "obsidian follow link" },
+      { "<leader>onN", "<cmd>Obsidian new<cr>", desc = "obsidian new permanent note" },
+      { "<leader>onn", "<cmd>Obsidian new_from_template<cr>", desc = "obsidian new from template" },
+      { "<leader>onT", "<cmd>Obsidian template<cr>", desc = "obsidian insert template" },
+      { "<leader>ons", "<cmd>Obsidian search<cr>", desc = "obsidian search" },
+      { "<leader>ono", "<cmd>Obsidian quick_switch<cr>", desc = "obsidian quickswitch" },
+      { "<leader>onO", "<cmd>Obsidian open<cr>", desc = "obsidian open in app" },
     },
+    opts = {
+      legacy_commands = false,
 
-    config = function()
-      --@diagnostic disable-next-line: missing-fields
-      require("obsidian").setup({
-        workspaces = {
-          {
-            name = "vault",
-            path = "~/vaults/",
+      workspaces = {
+        {
+          name = "main",
+          path = "~/vaults/main",
+        },
+      },
+
+      notes_subdir = "03 Permanent",
+
+      daily_notes = {
+        folder = "06 Dailies",
+        date_format = "%Y-%m-%d",
+        alias_format = "%B %-d, %Y",
+        template = "daily.md",
+      },
+
+      templates = {
+        folder = "07 Templates",
+        date_format = "%Y-%m-%d",
+        time_format = "%H:%M",
+
+        customizations = {
+          fleeting = {
+            notes_subdir = "01 Fleeting",
+          },
+          literature = {
+            notes_subdir = "02 Literature",
+          },
+          permanent = {
+            notes_subdir = "03 Permanent",
+          },
+          structure = {
+            notes_subdir = "04 Structure",
+          },
+          design = {
+            notes_subdir = "05 Projects",
+          },
+          reference = {
+            notes_subdir = "03 Permanent",
+          },
+          troubleshooting = {
+            notes_subdir = "03 Permanent",
+          },
+          daily = {
+            notes_subdir = "06 Dailies",
           },
         },
-        mappings = {
-          -- Overrides the 'gf' mapping to work on markdown/wiki links within your vault.
-          ["gf"] = {
-            action = function()
-              return require("obsidian").util.gf_passthrough()
-            end,
-            opts = { noremap = false, expr = true, buffer = true },
-          },
-          -- Toggle check-boxes.
-          ["<leader>ch"] = {
-            action = function()
-              return require("obsidian").util.toggle_checkbox()
-            end,
-            opts = { buffer = true },
-          },
-          -- Smart action depending on context, either follow link or toggle checkbox.
-          ["<CR>"] = {
-            action = function()
-              return require("obsidian").util.smart_action()
-            end,
-            opts = { buffer = true },
+      },
+
+      note_id_func = function(title)
+        local suffix = ""
+        if title and title ~= "" then
+          suffix = title:gsub(" ", "-"):gsub("[^A-Za-z0-9-]", ""):lower()
+        else
+          suffix = tostring(math.random(1000, 9999))
+        end
+        return os.date("%Y%m%d-%H%M") .. "-" .. suffix
+      end,
+      checkbox = {
+        enabled = true,
+        create_new = true,
+        order = { " ", "~", "!", ">", "x" },
+      },
+
+      ui = {
+        enable = true,
+        checkboxes = {
+          [" "] = { char = "󰄱", hl_group = "ObsidianTodo" },
+          ["x"] = { char = "", hl_group = "ObsidianDone" },
+          [">"] = { char = "", hl_group = "ObsidianRightArrow" },
+          ["~"] = { char = "󰰱", hl_group = "ObsidianTilde" },
+          ["!"] = { char = "", hl_group = "ObsidianImportant" },
+        },
+        bullets = { char = "•", hl_group = "ObsidianBullet" },
+        external_link_icon = { char = "", hl_group = "ObsidianExtLinkIcon" },
+        reference_text = { hl_group = "ObsidianRefText" },
+        highlight_text = { hl_group = "ObsidianHighlightText" },
+        tags = { hl_group = "ObsidianTag" },
+        block_ids = { hl_group = "ObsidianBlockID" },
+      },
+    },
+  },
+
+  {
+    "nvim-orgmode/orgmode",
+    event = "VeryLazy",
+    ft = { "org" },
+    cmd = "Org",
+    dependencies = {
+      { "danilshvalov/org-modern.nvim" },
+      {
+        "akinsho/org-bullets.nvim",
+        opts = {
+          concealcursor = true,
+          symbols = {
+            checkboxes = {
+              half = { "", "@org.checkbox.halfchecked" },
+              done = { "✓", "@org.checkbox.checked" },
+              todo = { " ", "@org.checkbox" },
+            },
           },
         },
-        daily_notes = {
-          workdays_only = false,
-          default = {},
-          folder = "dailies",
-          -- Optional, if you want to change the date format for the ID of daily notes.
-          date_format = "%Y-%m-%d",
-          alias_format = "%B %-d, %Y",
-          template = nil,
-        },
-        ui = {
-          enable = true,
-          checkboxes = {
-            [" "] = { char = "󰄱", hl_group = "ObsidianTodo", order = 1 },
-            ["x"] = { char = "", hl_group = "ObsidianDone", order = 2 },
-            [">"] = { char = "", hl_group = "ObsidianRightArrow", order = 3 },
-            ["~"] = { char = "󰰱", hl_group = "ObsidianTilde", order = 4 },
+      },
+      {
+        "hamidi-dev/org-list.nvim",
+        dependencies = { "tpope/vim-repeat" },
+        opts = {
+          mapping = {
+            key = "<Leader>osl",
+            desc = "org list toggle",
           },
-          bullets = { char = "•", hl_group = "ObsidianBullet" },
-          external_link_icon = { char = "", hl_group = "ObsidianExtLinkIcon" },
-          -- Replace the above with this if you don't have a patched font:
-          -- external_link_icon = { char = "", hl_group = "ObsidianExtLinkIcon" },
-          reference_text = { hl_group = "ObsidianRefText" },
-          highlight_text = { hl_group = "ObsidianHighlightText" },
-          tags = { hl_group = "ObsidianTag" },
-          block_ids = { hl_group = "ObsidianBlockID" },
-          -- hl_groups = {
-          --   -- The options are passed directly to `vim.api.nvim_set_hl()`. See `:help nvim_set_hl`.
-          --   ObsidianTodo = { bold = true, fg = '#f78c6c' },
-          --   ObsidianDone = { bold = true, fg = '#89ddff' },
-          --   ObsidianRightArrow = { bold = true, fg = '#f78c6c' },
-          --   ObsidianTilde = { bold = true, fg = '#ff5370' },
-          --   ObsidianBullet = { bold = true, fg = '#89ddff' },
-          --   ObsidianRefText = { underline = true, fg = '#c792ea' },
-          --   ObsidianExtLinkIcon = { fg = '#c792ea' },
-          --   ObsidianTag = { italic = true, fg = '#89ddff' },
-          --   ObsidianBlockID = { italic = true, fg = '#89ddff' },
-          --   ObsidianHighlightText = { bg = '#75662e' },
-          -- },
+          checkbox_toggle = {
+            enabled = true,
+            key = "<Leader>osc",
+            desc = "org list checkbox toggle",
+          },
         },
-        -- Optional, customize how names/IDs for new notes are created.
-        note_id_func = function(title)
-          -- Create note IDs in a Zettelkasten format with a timestamp and a suffix.
-          -- In this case a note with the title 'My new note' will be given an ID that looks
-          -- like '1657296016-my-new-note', and therefore the file name '1657296016-my-new-note.md'
-          local suffix = ""
-          if title ~= nil then
-            -- If title is given, transform it into valid file name.
-            suffix = title:gsub(" ", "-"):gsub("[^A-Za-z0-9-]", ""):lower()
-          else
-            -- If title is nil, just add 4 random uppercase letters to the suffix.
-            for _ = 1, 4 do
-              suffix = suffix .. string.char(math.random(65, 90))
-            end
+      },
+    },
+    keys = {
+      { "<Leader>oa", "<cmd>Org agenda<cr>", desc = "org agenda" },
+      { "<Leader>oc", "<cmd>Org capture<cr>", desc = "org capture" },
+      { "<Leader>ow", "<cmd>Org agenda w<cr>", desc = "org work agenda" },
+      { "<Leader>op", "<cmd>Org agenda p<cr>", desc = "org personal agenda" },
+      { "<Leader>oA", "<cmd>Org agenda A<cr>", desc = "org all agenda" },
+      { "<Leader>oTa", "<cmd>EasyAlign|<cr>", desc = "org table align", mode = "v" },
+      { "<Leader>oTl", "<cmd>lua align_org_table()<cr>", desc = "org table align (lua)", mode = "v" },
+    },
+    opts = {
+      org_agenda_files = {
+        "~/orgfiles/second-brain/work/**/*.org",
+        "~/orgfiles/second-brain/personal/**/*.org",
+      },
+
+      org_default_notes_file = "~/orgfiles/refile.org",
+      org_archive_location = "~/orgfiles/archive.org::",
+
+      org_agenda_span = 14,
+      org_agenda_start_on_weekday = 1,
+
+      org_agenda_custom_commands = {
+        A = {
+          description = "📅 Agenda & All Tasks (Global)",
+          types = {
+            { type = "agenda" },
+            { type = "tags_todo" },
+          },
+        },
+        w = {
+          description = "💼 Work Focus",
+          types = {
+            {
+              type = "agenda",
+              org_agenda_files = { "~/orgfiles/second-brain/work/**/*.org" },
+            },
+            {
+              type = "tags_todo",
+              org_agenda_files = { "~/orgfiles/second-brain/work/**/*.org" },
+            },
+          },
+        },
+        p = {
+          description = "🏠 Personal Focus",
+          types = {
+            {
+              type = "agenda",
+              org_agenda_files = { "~/orgfiles/second-brain/personal/**/*.org" },
+            },
+            {
+              type = "tags_todo",
+              org_agenda_files = { "~/orgfiles/second-brain/personal/**/*.org" },
+            },
+          },
+        },
+        T = {
+          description = "📋 Triage / Planning",
+          types = {
+            { type = "tags_todo", match = "BACKLOG" },
+          },
+        },
+        i = {
+          description = "🚀 In Progress View",
+          types = {
+            { type = "tags_todo", match = "IN-PROGRESS/IN-REVIEW/TESTING" },
+          },
+        },
+        b = {
+          description = "❗ Blocked / Waiting",
+          types = {
+            { type = "tags_todo", match = "BLOCKED/WAITING/ON-HOLD" },
+          },
+        },
+      },
+
+      org_todo_keywords = {
+        "BACKLOG(B)",
+        "TODO(t)",
+        "IN-PROGRESS(p)",
+        "IN-REVIEW(r)",
+        "TESTING(e)",
+        "BLOCKED(l)",
+        "WAITING(w)",
+        "ON-HOLD(h)",
+        "|",
+        "DONE(d)",
+        "CANCELLED(c)",
+        "REJECTED(j)",
+      },
+
+      org_todo_keyword_faces = {
+        BACKLOG = ":foreground #a8a8a8",
+        TODO = ":foreground #0088ff :weight bold",
+        ["IN-PROGRESS"] = ":foreground #ffd700 :weight bold",
+        ["IN-REVIEW"] = ":foreground #00d7d7 :weight bold",
+        TESTING = ":foreground #87ceff :weight bold",
+        BLOCKED = ":foreground #ff2020 :background #5c0000 :weight bold",
+        WAITING = ":foreground #ff5faf :weight bold",
+        ["ON-HOLD"] = ":foreground #d7aaff :weight bold",
+        DONE = ":foreground #5fff5f :weight bold",
+        CANCELLED = ":foreground #585858 :weight bold",
+        REJECTED = ":foreground #d75f00 :weight bold",
+      },
+
+      org_tag_faces = {
+        IDEA = ":foreground #ffc600 :weight bold",
+        RAW = ":foreground #af87ff :slant italic",
+        PROJECT = ":foreground #ffc600",
+        APPLICATION = ":foreground #ffc600",
+        HABIT = ":foreground #ff9d00",
+        NOTE = ":foreground #9effff :slant italic",
+        JOURNAL = ":foreground #9effff :slant italic",
+        LINK = ":foreground #0088ff",
+        WORK = ":foreground #a5ff90",
+        PERSONAL = ":foreground #0088ff",
+        NEOVIM = ":foreground #a5ff90 :weight bold",
+        MEETING = ":foreground #5fffaf",
+        PHONE = ":foreground #5fffaf",
+        BUG = ":foreground #ff628c :weight bold",
+        FEATURE = ":foreground #ffc600",
+        REFACTOR = ":foreground #9effff",
+        DOCS = ":foreground #9effff",
+        TESTS = ":foreground #9effff",
+        CRITICAL = ":foreground #ff628c :weight bold",
+        HIGH = ":foreground #ff9d00 :weight bold",
+        LOW = ":foreground #a8a8a8 :slant italic",
+        INCIDENT = ":foreground #ff628c :weight bold",
+      },
+
+      org_special_keyword_faces = {
+        SCHEDULED = ":foreground #8a8a8a",
+        DEADLINE = ":foreground #8a8a8a",
+        CLOSED = ":foreground #8a8a8a",
+      },
+
+      org_capture_templates = {
+        i = {
+          description = "Idea",
+          subtemplates = {
+            i = {
+              description = "Raw Idea",
+              template = "* %? :IDEA:RAW:",
+              target = "~/orgfiles/second-brain/work/ideas/inbox.org",
+              properties = { empty_lines = { before = 1 } },
+            },
+            p = {
+              description = "Project",
+              template = "* %? :IDEA:PROJECT:",
+              target = "~/orgfiles/second-brain/work/ideas/project.org",
+              properties = { empty_lines = { before = 1 } },
+            },
+            a = {
+              description = "Application",
+              template = "* %? :IDEA:APPLICATION:",
+              target = "~/orgfiles/second-brain/work/ideas/application.org",
+              properties = { empty_lines = { before = 1 } },
+            },
+            n = {
+              description = "Neovim",
+              template = "* %? :IDEA:NEOVIM:",
+              target = "~/orgfiles/second-brain/work/ideas/neovim.org",
+              properties = { empty_lines = { before = 1 } },
+            },
+            w = {
+              description = "Work",
+              template = "* %? :IDEA:WORK:",
+              target = "~/orgfiles/second-brain/work/ideas/inbox.org",
+              properties = { empty_lines = { before = 1 } },
+            },
+          },
+        },
+
+        t = {
+          description = "Task",
+          subtemplates = {
+            p = {
+              description = "Personal",
+              template = "* TODO %? :TASK:PERSONAL:\n  SCHEDULED: %U DEADLINE: %t",
+              target = "~/orgfiles/second-brain/personal/agenda/todos.org",
+              properties = { empty_lines = { before = 1 } },
+            },
+            n = {
+              description = "Neovim",
+              template = "* TODO %? :NEOVIM:TASK:\n  SCHEDULED: %U DEADLINE: %t",
+              target = "~/orgfiles/second-brain/personal/agenda/todos.org",
+              properties = { empty_lines = { before = 1 } },
+            },
+            w = {
+              description = "Work",
+              template = "* TODO %? :TASK:WORK:\n  SCHEDULED: %U DEADLINE: %t",
+              target = "~/orgfiles/second-brain/work/agenda/todos.org",
+              properties = { empty_lines = { before = 1 } },
+            },
+          },
+        },
+
+        x = {
+          description = "Incident",
+          subtemplates = {
+            w = {
+              description = "Work incident log",
+              target = "~/orgfiles/second-brain/work/agenda/incidents.org",
+              template = "* TODO %^{Incident title} :WORK:INCIDENT:\n  SCHEDULED: %U\n  :PROPERTIES:\n  :AREA: %^{Area|backend|infra|client|network|service}\n  :SYSTEM: %^{System}\n  :END:\n\n** Summary\n%?\n\n** Timeline\n- [%<%H:%M>] Incident started / observed\n\n** Investigation\n- \n\n** Actions\n- \n\n** Outcome\n- \n\n** Convert to notes\n- [ ] Create troubleshooting note\n- [ ] Create permanent note\n- [ ] Create postmortem note\n",
+              properties = { empty_lines = { before = 1 } },
+            },
+          },
+        },
+
+        n = {
+          description = "Note",
+          subtemplates = {
+            p = {
+              description = "Personal",
+              template = "* %^{Title} :NOTE:\n  %U\n\n%?",
+              target = "~/orgfiles/second-brain/personal/notes/inbox.org",
+              properties = { empty_lines = { before = 1 } },
+            },
+            w = {
+              description = "Work",
+              template = "* %^{Title} :NOTE:WORK:\n  %U\n\n%?",
+              target = "~/orgfiles/second-brain/work/notes/inbox.org",
+              properties = { empty_lines = { before = 1 } },
+            },
+          },
+        },
+
+        j = {
+          description = "Journal",
+          subtemplates = {
+            p = {
+              description = "Personal",
+              target = "~/orgfiles/second-brain/personal/journal/inbox.org",
+              template = "**** [%<%I:%M %p>] %?",
+              datetree = { tree_type = "day", reversed = true },
+              properties = { empty_lines = { before = 1 } },
+            },
+            w = {
+              description = "Work",
+              target = "~/orgfiles/second-brain/work/journal/inbox.org",
+              template = "**** [%<%I:%M %p>] %? :WORK:",
+              datetree = { tree_type = "day", reversed = true },
+              properties = { empty_lines = { before = 1 } },
+            },
+          },
+        },
+
+        m = {
+          description = "Meeting",
+          subtemplates = {
+            p = {
+              description = "Personal",
+              template = "* MEETING with %? :MEETING:\n  SCHEDULED: %t",
+              target = "~/orgfiles/second-brain/personal/agenda/calls.org",
+              properties = { empty_lines = { before = 1 } },
+            },
+            w = {
+              description = "Work",
+              template = "* MEETING with %? :MEETING:WORK:\n  SCHEDULED: %t",
+              target = "~/orgfiles/second-brain/work/agenda/calls.org",
+              properties = { empty_lines = { before = 1 } },
+            },
+          },
+        },
+
+        p = {
+          description = "Phone Call",
+          subtemplates = {
+            p = {
+              description = "Personal",
+              template = "* CALL with %? :PHONE:\n  SCHEDULED: %t",
+              target = "~/orgfiles/second-brain/personal/agenda/calls.org",
+              properties = { empty_lines = { before = 1 } },
+            },
+            w = {
+              description = "Work",
+              template = "* CALL with %? :PHONE:WORK:\n  SCHEDULED: %t",
+              target = "~/orgfiles/second-brain/work/agenda/calls.org",
+              properties = { empty_lines = { before = 1 } },
+            },
+          },
+        },
+
+        h = {
+          description = "Habit",
+          subtemplates = {
+            p = {
+              description = "Personal",
+              template = "* TODO %? :HABIT:\n  SCHEDULED: %t\n  :PROPERTIES:\n  :STYLE: habit\n  :REPEAT_TO_STATE: TODO\n  :END:",
+              target = "~/orgfiles/second-brain/personal/agenda/habits.org",
+              properties = { empty_lines = { before = 1 } },
+            },
+            w = {
+              description = "Work",
+              template = "* TODO %? :HABIT:WORK:\n  SCHEDULED: %t\n  :PROPERTIES:\n  :STYLE: habit\n  :REPEAT_TO_STATE: TODO\n  :END:",
+              target = "~/orgfiles/second-brain/work/agenda/habits.org",
+              properties = { empty_lines = { before = 1 } },
+            },
+          },
+        },
+
+        l = {
+          description = "Link",
+          subtemplates = {
+            r = {
+              description = "Useful resource links",
+              template = "  - [[%^{Link||}][%^{Description}]] :LINK:",
+              headline = "Useful resource links",
+              target = "~/orgfiles/second-brain/personal/vocabulary/links.org",
+            },
+          },
+        },
+      },
+    },
+    config = function(_, opts)
+      local Menu = require("org-modern.menu")
+
+      opts.ui = opts.ui or {}
+      opts.ui.menu = {
+        handler = function(data)
+          Menu:new({
+            window = {
+              margin = { 1, 0, 1, 0 },
+              padding = { 0, 1, 0, 1 },
+              title_pos = "center",
+              border = "single",
+              zindex = 1000,
+            },
+            icons = {
+              separator = "➜",
+            },
+          }):open(data)
+        end,
+      }
+
+      require("orgmode").setup(opts)
+
+      local org = require("orgmode")
+
+      local function find_link()
+        local line = vim.api.nvim_get_current_line()
+        local col = vim.fn.col(".")
+        local search_from = 1
+
+        while true do
+          local s, e = line:find("%[%[.-%]%]", search_from)
+          if not s then
+            return nil
           end
-          return tostring(os.time()) .. "-" .. suffix
+
+          if col >= s and col <= e then
+            return { start_col = s, end_col = e }
+          end
+
+          search_from = e + 1
+        end
+      end
+
+      local FN_MATCHERS = {
+        { match = find_link, action = "org_mappings.open_at_point" },
+      }
+
+      local NODE_ACTIONS = {
+        timestamp = "org_mappings.change_date",
+        headline = "org_mappings.todo_next_state",
+        listitem = "org_mappings.toggle_checkbox",
+        list = "org_mappings.toggle_checkbox",
+      }
+
+      local DEFAULT_ACTION = "org_mappings.open_at_point"
+
+      local function get_ts_node_at_cursor()
+        if vim.treesitter and vim.treesitter.get_node then
+          local row = vim.fn.line(".") - 1
+          local col = vim.fn.col(".") - 1
+          return vim.treesitter.get_node({ bufnr = 0, pos = { row, col } })
+        end
+
+        local ok, ts_utils = pcall(require, "nvim-treesitter.ts_utils")
+        if ok and ts_utils.get_node_at_cursor then
+          return ts_utils.get_node_at_cursor()
+        end
+      end
+
+      local function get_action_from_type()
+        for _, m in ipairs(FN_MATCHERS) do
+          local ok, res = pcall(m.match)
+          if ok and res ~= nil then
+            return m.action
+          end
+        end
+
+        local node = get_ts_node_at_cursor()
+        if not node then
+          return DEFAULT_ACTION
+        end
+
+        local start_row = select(1, node:range())
+        while node do
+          local action = NODE_ACTIONS[node:type()]
+          if action then
+            return action
+          end
+
+          local parent = node:parent()
+          if not parent then
+            break
+          end
+
+          if select(1, parent:range()) ~= start_row then
+            break
+          end
+
+          node = parent
+        end
+
+        return DEFAULT_ACTION
+      end
+
+      local function toggle_org_item()
+        local action = get_action_from_type()
+        if action then
+          org.action(action)
+        end
+      end
+
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = "org",
+        callback = function(ev)
+          vim.keymap.set("n", "<CR>", toggle_org_item, { buffer = ev.buf, noremap = true, silent = true })
         end,
       })
-      -- vim.wo.conceallevel = 1
+    end,
+  },
+
+  {
+    "hamidi-dev/org-super-agenda.nvim",
+    dependencies = {
+      "nvim-orgmode/orgmode",
+    },
+    cmd = "OrgSuperAgenda",
+    keys = {
+      { "<Leader>o.", "<cmd>OrgSuperAgenda<cr>", desc = "org super agenda" },
+    },
+    config = function()
+      local function E(p)
+        return vim.fn.expand(p)
+      end
+
+      local function glob_list(pat)
+        return vim.fn.glob(E(pat), true, true)
+      end
+
+      local org_files = {}
+      vim.list_extend(org_files, glob_list("~/orgfiles/second-brain/work/**/*.org"))
+      vim.list_extend(org_files, glob_list("~/orgfiles/second-brain/personal/**/*.org"))
+
+      local archive = E("~/orgfiles/archive.org")
+      org_files = vim.tbl_filter(function(path)
+        return path ~= archive
+      end, org_files)
+
+      local function has_tag(i, tag)
+        return i:has_tag(tag) or i:has_tag(tag:lower()) or i:has_tag(tag:upper())
+      end
+
+      local function not_done(i)
+        return i.todo_state ~= "DONE" and i.todo_state ~= "CANCELLED" and i.todo_state ~= "REJECTED"
+      end
+
+      require("org-super-agenda").setup({
+        org_files = org_files,
+        org_directories = {},
+        exclude_files = {
+          archive,
+        },
+        popup_mode = {
+          enabled = false,
+          hide_command = nil,
+        },
+        hide_empty_groups = true,
+        show_other_groups = true,
+        groups = {
+          {
+            name = "⏳ Overdue",
+            matcher = function(i)
+              return not_done(i) and ((i.deadline and i.deadline:is_past()) or (i.scheduled and i.scheduled:is_past()))
+            end,
+            sort = { by = "date_nearest", order = "asc" },
+          },
+          {
+            name = "💀 Deadlines",
+            matcher = function(i)
+              return not_done(i) and i.deadline
+            end,
+            sort = { by = "deadline", order = "asc" },
+          },
+          {
+            name = "📅 Today",
+            matcher = function(i)
+              return not_done(i) and i.scheduled and i.scheduled:is_today()
+            end,
+            sort = { by = "priority", order = "desc" },
+          },
+          {
+            name = "📅 Tomorrow",
+            matcher = function(i)
+              return not_done(i) and i.scheduled and i.scheduled:days_from_today() == 1
+            end,
+          },
+          {
+            name = "🚀 In Progress",
+            matcher = function(i)
+              return not_done(i)
+                and (i.todo_state == "IN-PROGRESS" or i.todo_state == "IN-REVIEW" or i.todo_state == "TESTING")
+            end,
+          },
+          {
+            name = "🛑 Blocked / Waiting",
+            matcher = function(i)
+              return not_done(i)
+                and (i.todo_state == "BLOCKED" or i.todo_state == "WAITING" or i.todo_state == "ON-HOLD")
+            end,
+          },
+          {
+            name = "💼 Work",
+            matcher = function(i)
+              return has_tag(i, "WORK")
+            end,
+          },
+          {
+            name = "🏠 Personal",
+            matcher = function(i)
+              return has_tag(i, "PERSONAL")
+            end,
+          },
+        },
+      })
     end,
   },
 
@@ -201,80 +769,5 @@ return {
   --   opts = {
   --     -- files = { "*.md" }, -- any .md file (instead of defaults)
   --   },
-  -- },
-
-  -- {
-  --   'nvim-neorg/neorg',
-  --   lazy = false, -- Disable lazy loading as some `lazy.nvim` distributions set `lazy = true` by default
-  --   version = '*', -- Pin Neorg to the latest stable release
-  --   build = ':Neorg sync-parsers',
-  --   dependencies = {
-  --     {
-  --       'juniorsundar/neorg-extras',
-  --     },
-  --     'folke/snacks.nvim',
-  --   },
-  --   config = function()
-  --     require('neorg').setup {
-  --       load = {
-  --         ['core.defaults'] = {},
-  --         ['core.completion'] = {
-  --           config = {
-  --             engine = 'nvim-cmp',
-  --           },
-  --         },
-  --         ['core.integrations.nvim-cmp'] = {},
-  --         ['core.concealer'] = {
-  --           config = {
-  --             icon_preset = 'basic',
-  --             icons = {
-  --               code_block = {
-  --                 icon = '',
-  --                 conceal = true,
-  --                 content_only = true,
-  --               },
-  --             },
-  --
-  --             -- directive = {
-  --             --   icon = '',
-  --             --   nodes = { 'directive_image' },
-  --             --   render = require('neorg.modules.core.concealer').public.icon_renderers.on_left,
-  --             -- },
-  --           },
-  --         },
-  --         ['core.dirman'] = {
-  --           config = {
-  --             workspaces = {
-  --               notes = '~/neorg',
-  --             },
-  --             default_workspace = 'notes',
-  --           },
-  --         },
-  --         ['external.many-mans'] = {
-  --           config = {
-  --             metadata_fold = true, -- If want @data property ... @end to fold
-  --             code_fold = true, -- If want @code ... @end to fold
-  --           },
-  --         },
-  --         -- OPTIONAL
-  --         ['external.agenda'] = {
-  --           config = {
-  --             workspace = nil, -- or set to "tasks_workspace" to limit agenda search to just that workspace
-  --           },
-  --         },
-  --         ['external.roam'] = {
-  --           config = {
-  --             fuzzy_finder = 'Snacks', -- OR "Fzf" OR "Snacks". Defaults to "Telescope"
-  --             fuzzy_backlinks = false, -- Set to "true" for backlinks in fuzzy finder instead of buffer
-  --             roam_base_directory = '', -- Directory in current workspace to store roam nodes
-  --             node_name_randomiser = false, -- Tokenise node name suffix for more randomisation
-  --             node_name_snake_case = false, -- snake_case the names if node_name_randomiser = false
-  --           },
-  --         },
-  --       },
-  --     }
-  --     vim.wo.foldlevel = 90
-  --     vim.wo.conceallevel = 2
-  --   end,
   -- },
 }
