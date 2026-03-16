@@ -160,6 +160,7 @@ return {
 
       org_agenda_span = 14,
       org_agenda_start_on_weekday = 1,
+      win_split_mode = "tabnew",
 
       org_agenda_custom_commands = {
         A = {
@@ -568,6 +569,9 @@ return {
       vim.api.nvim_create_autocmd("FileType", {
         pattern = "org",
         callback = function(ev)
+          vim.keymap.set("n", "<Leader>ot", function()
+            org.action("org_mappings.todo_next_state")
+          end, { buffer = ev.buf, noremap = true, silent = true, desc = "org todo state menu" })
           vim.keymap.set("n", "<CR>", toggle_org_item, { buffer = ev.buf, noremap = true, silent = true })
         end,
       })
@@ -581,7 +585,7 @@ return {
     },
     cmd = "OrgSuperAgenda",
     keys = {
-      { "<Leader>o.", "<cmd>OrgSuperAgenda<cr>", desc = "org super agenda" },
+      { "<Leader>o.", "<cmd>OrgSuperAgenda!<cr>", desc = "org super agenda" },
     },
     config = function()
       local function E(p)
