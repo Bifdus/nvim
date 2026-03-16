@@ -81,12 +81,10 @@ return {
         end
         return os.date("%Y%m%d-%H%M") .. "-" .. suffix
       end,
+
       checkbox = {
-        enabled = true,
-        create_new = true,
         order = { " ", "~", "!", ">", "x" },
       },
-
       ui = {
         enable = true,
         checkboxes = {

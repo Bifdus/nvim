@@ -68,6 +68,8 @@ vim.opt.foldlevelstart = 99
 
 vim.opt.title = true
 
+vim.opt.conceallevel =  2
+
 -- Expand tab
 -- Set tab spacing
 vim.opt.tabstop = 2
