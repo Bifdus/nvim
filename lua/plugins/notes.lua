@@ -11,10 +11,11 @@ return {
       { "<leader>ont", "<cmd>Obsidian today 1<cr>", desc = "obsidian tomorrow" },
       { "<leader>ony", "<cmd>Obsidian today -1<cr>", desc = "obsidian yesterday" },
       { "<leader>onb", "<cmd>Obsidian backlinks<cr>", desc = "obsidian backlinks" },
-      { "<leader>onl", "<cmd>Obsidian link<cr>", desc = "obsidian link selection" },
+      { "<leader>onl", "<cmd>Obsidian link<cr>", desc = "obsidian link selection", mode = { "v" } },
       { "<leader>onf", "<cmd>Obsidian follow_link<cr>", desc = "obsidian follow link" },
       { "<leader>onN", "<cmd>Obsidian new<cr>", desc = "obsidian new permanent note" },
       { "<leader>onn", "<cmd>Obsidian new_from_template<cr>", desc = "obsidian new from template" },
+      { "<leader>onc", "<cmd>Obsidian toc<cr>", desc = "obsidian view TOC" },
       { "<leader>onT", "<cmd>Obsidian template<cr>", desc = "obsidian insert template" },
       { "<leader>ons", "<cmd>Obsidian search<cr>", desc = "obsidian search" },
       { "<leader>ono", "<cmd>Obsidian quick_switch<cr>", desc = "obsidian quickswitch" },
@@ -30,44 +31,47 @@ return {
         },
       },
 
-      notes_subdir = "03 Permanent",
+      notes_subdir = "01 Notes",
 
       daily_notes = {
-        folder = "06 Dailies",
+        folder = "02 Dailies",
         date_format = "%Y-%m-%d",
         alias_format = "%B %-d, %Y",
         template = "daily.md",
       },
 
       templates = {
-        folder = "07 Templates",
+        folder = "04 Templates",
         date_format = "%Y-%m-%d",
         time_format = "%H:%M",
 
         customizations = {
           fleeting = {
-            notes_subdir = "01 Fleeting",
+            notes_subdir = "00 Inbox",
           },
           literature = {
-            notes_subdir = "02 Literature",
+            notes_subdir = "01 Notes",
           },
           permanent = {
-            notes_subdir = "03 Permanent",
+            notes_subdir = "01 Notes",
           },
           structure = {
-            notes_subdir = "04 Structure",
+            notes_subdir = "01 Notes",
           },
-          design = {
-            notes_subdir = "05 Projects",
-          },
-          reference = {
-            notes_subdir = "03 Permanent",
+          process = {
+            notes_subdir = "01 Notes",
           },
           troubleshooting = {
-            notes_subdir = "03 Permanent",
+            notes_subdir = "00 Inbox",
           },
           daily = {
-            notes_subdir = "06 Dailies",
+            notes_subdir = "02 Dailies",
+          },
+          meeting = {
+            notes_subdir = "03 Meetings",
+          },
+          reference = {
+            notes_subdir = "01 Notes",
           },
         },
       },
@@ -81,19 +85,21 @@ return {
         end
         return os.date("%Y%m%d-%H%M") .. "-" .. suffix
       end,
-
       checkbox = {
+        enabled = true,
+        create_new = true,
         order = { " ", "~", "!", ">", "x" },
       },
+
       ui = {
         enable = true,
-        checkboxes = {
-          [" "] = { char = "󰄱", hl_group = "ObsidianTodo" },
-          ["x"] = { char = "", hl_group = "ObsidianDone" },
-          [">"] = { char = "", hl_group = "ObsidianRightArrow" },
-          ["~"] = { char = "󰰱", hl_group = "ObsidianTilde" },
-          ["!"] = { char = "", hl_group = "ObsidianImportant" },
-        },
+        -- checkboxes = {
+        --   [" "] = { char = "", hl_group = "ObsidianTodo" },
+        --   ["x"] = { char = "", hl_group = "ObsidianDone" },
+        --   [">"] = { char = "", hl_group = "ObsidianRightArrow" },
+        --   ["~"] = { char = "󰰱", hl_group = "ObsidianTilde" },
+        --   ["!"] = { char = "", hl_group = "ObsidianImportant" },
+        -- },
         bullets = { char = "•", hl_group = "ObsidianBullet" },
         external_link_icon = { char = "", hl_group = "ObsidianExtLinkIcon" },
         reference_text = { hl_group = "ObsidianRefText" },
@@ -111,19 +117,19 @@ return {
     cmd = "Org",
     dependencies = {
       { "danilshvalov/org-modern.nvim" },
-      {
-        "akinsho/org-bullets.nvim",
-        opts = {
-          concealcursor = true,
-          symbols = {
-            checkboxes = {
-              half = { "", "@org.checkbox.halfchecked" },
-              done = { "✓", "@org.checkbox.checked" },
-              todo = { " ", "@org.checkbox" },
-            },
-          },
-        },
-      },
+      -- {
+      --   "akinsho/org-bullets.nvim",
+      --   opts = {
+      --     concealcursor = true,
+      --     symbols = {
+      --       -- checkboxes = {
+      --       --   half = { "", "@org.checkbox.halfchecked" },
+      --       --   done = { "✓", "@org.checkbox.checked" },
+      --       --   todo = { " ", "@org.checkbox" },
+      --       -- },
+      --     },
+      --   },
+      -- },
       {
         "hamidi-dev/org-list.nvim",
         dependencies = { "tpope/vim-repeat" },
@@ -160,7 +166,6 @@ return {
 
       org_agenda_span = 14,
       org_agenda_start_on_weekday = 1,
-      win_split_mode = "tabnew",
 
       org_agenda_custom_commands = {
         A = {
@@ -569,9 +574,6 @@ return {
       vim.api.nvim_create_autocmd("FileType", {
         pattern = "org",
         callback = function(ev)
-          vim.keymap.set("n", "<Leader>ot", function()
-            org.action("org_mappings.todo_next_state")
-          end, { buffer = ev.buf, noremap = true, silent = true, desc = "org todo state menu" })
           vim.keymap.set("n", "<CR>", toggle_org_item, { buffer = ev.buf, noremap = true, silent = true })
         end,
       })
@@ -585,7 +587,7 @@ return {
     },
     cmd = "OrgSuperAgenda",
     keys = {
-      { "<Leader>o.", "<cmd>OrgSuperAgenda!<cr>", desc = "org super agenda" },
+      { "<Leader>o.", "<cmd>OrgSuperAgenda<cr>", desc = "org super agenda" },
     },
     config = function()
       local function E(p)
@@ -684,32 +686,32 @@ return {
     end,
   },
 
-  {
-    "lukas-reineke/headlines.nvim",
-    ft = { "markdown" },
-    enabled = false,
-    config = function()
-      -- Colors for orgmode headlines
-      vim.cmd([[highlight Headline1 guibg=#21262d]])
-      -- vim.cmd [[highlight Headline2 guibg=#21262d]]
-
-      local bullet_highlighs = {
-        "@markup.heading.1.markdown",
-        "@markup.heading.2.markdown",
-        "@markup.heading.3.markdown",
-        "@markup.heading.4.markdown",
-        "@markup.heading.5.markdown",
-        "@markup.heading.6.markdown",
-      }
-      require("headlines").setup({
-        org = {
-          headline_highlights = { "Headline1" },
-          bullets = { "◉", "○", "✸", "✿" },
-          bullet_highlighs = bullet_highlighs,
-        },
-      })
-    end,
-  },
+  -- {
+  --   "lukas-reineke/headlines.nvim",
+  --   ft = { "markdown" },
+  --   enabled = false,
+  --   config = function()
+  --     -- Colors for orgmode headlines
+  --     vim.cmd([[highlight Headline1 guibg=#21262d]])
+  --     -- vim.cmd [[highlight Headline2 guibg=#21262d]]
+  --
+  --     local bullet_highlighs = {
+  --       "@markup.heading.1.markdown",
+  --       "@markup.heading.2.markdown",
+  --       "@markup.heading.3.markdown",
+  --       "@markup.heading.4.markdown",
+  --       "@markup.heading.5.markdown",
+  --       "@markup.heading.6.markdown",
+  --     }
+  --     require("headlines").setup({
+  --       org = {
+  --         headline_highlights = { "Headline1" },
+  --         bullets = { "◉", "○", "✸", "✿" },
+  --         bullet_highlighs = bullet_highlighs,
+  --       },
+  --     })
+  --   end,
+  -- },
 
   -----------------------------------------------------------------------------
   -- Preview Markdown
@@ -737,6 +739,25 @@ return {
       require("render-markdown").setup({
         auto_open = true,
         auto_close = true,
+
+        win_options = {
+          -- Window options to use that change between rendered and raw view.
+
+          -- @see :h 'conceallevel'
+          conceallevel = {
+            -- Used when not being rendered, get user setting.
+            default = vim.o.conceallevel,
+            -- Used when being rendered, concealed text is completely hidden.
+            rendered = 2,
+          },
+          -- @see :h 'concealcursor'
+          concealcursor = {
+            -- Used when not being rendered, get user setting.
+            default = vim.o.concealcursor,
+            -- Used when being rendered, show concealed text in all modes.
+            rendered = "",
+          },
+        },
         -- Add more options based on the plugin's documentation
         heading = {
           sign = false,
