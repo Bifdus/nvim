@@ -118,7 +118,7 @@ function M.extract_to_templated_note(selection)
       return
     end
 
-    vim.ui.select({ "fleeting", "reference", "process", "permanent" }, {
+    vim.ui.select({ "fleeting", "reference", "structure", "process", "permanent" }, {
       prompt = "Template:",
     }, function(template_name)
       if not template_name then
