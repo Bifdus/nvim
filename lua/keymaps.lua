@@ -181,16 +181,9 @@ vim.keymap.set("n", "<leader>ct", function()
   require("copilot.suggestion").toggle_auto_trigger()
 end, { desc = "Toggle Copilot Ghost Text" })
 
+vim.keymap.set("x", "<leader>one", function()
+  local mod = require("util.obsidian")
+  local selection = mod.get_linewise_selection_and_range()
 
-vim.keymap.set("v", "<leader>one", function()
-  local obs = require("util.obsidian")
-  local selection = obs.get_visual_selection_and_range()
-
-  vim.cmd("normal! \\<Esc>")
-
-  vim.schedule(function()
-    obs.extract_to_templated_note(selection)
-  end)
-end, {
-  desc = "Extract selection to Obsidian note from template",
-})
+  mod.extract_to_templated_note(selection)
+end)

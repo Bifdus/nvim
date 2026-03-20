@@ -3,102 +3,273 @@ local M = {}
 local obsidian = require("obsidian")
 local Note = obsidian.Note
 
-local function normalize_range(start_row, start_col, end_row, end_col)
-  if start_row > end_row or (start_row == end_row and start_col > end_col) then
-    return end_row, end_col, start_row, start_col
+local CTRL_V = vim.api.nvim_replace_termcodes("<C-v>", true, false, true)
+
+local function clamp(x, minv, maxv)
+  if x < minv then
+    return minv
+  elseif x > maxv then
+    return maxv
   end
-  return start_row, start_col, end_row, end_col
+  return x
+end
+
+local function line_count(bufnr)
+  return vim.api.nvim_buf_line_count(bufnr)
+end
+
+local function get_line(bufnr, row)
+  local lines = vim.api.nvim_buf_get_lines(bufnr, row, row + 1, false)
+  return lines[1] or ""
 end
 
 local function line_len(bufnr, row)
-  return #vim.api.nvim_buf_get_lines(bufnr, row, row + 1, false)[1]
+  return #get_line(bufnr, row)
 end
 
-local function clamp(val, min_val, max_val)
-  if val < min_val then
-    return min_val
-  elseif val > max_val then
-    return max_val
+local function get_mark(mark)
+  local pos = vim.fn.getpos(mark)
+  return pos[2] - 1, pos[3] - 1
+end
+
+local function split_lines(text)
+  return vim.split(text, "\n", { plain = true, trimempty = false })
+end
+
+local function current_visual_type()
+  local mode = vim.fn.mode(1)
+
+  if mode == "V" then
+    return "line"
   end
-  return val
-end
 
-local function sanitize_range(bufnr, start_row, start_col, end_row, end_col)
-  local line_count = vim.api.nvim_buf_line_count(bufnr)
-  if line_count == 0 then
-    return 0, 0, 0, 0
+  if mode == CTRL_V or mode == "\22" then
+    return "block"
   end
 
-  start_row = clamp(start_row, 0, line_count - 1)
-  end_row = clamp(end_row, 0, line_count - 1)
+  if mode == "v" or mode == "vs" or mode == "s" then
+    return "char"
+  end
 
-  local start_len = line_len(bufnr, start_row)
-  local end_len = line_len(bufnr, end_row)
+  local ok, vmode = pcall(vim.fn.visualmode)
+  if ok then
+    if vmode == "V" then
+      return "line"
+    end
+    if vmode == CTRL_V or vmode == "\22" then
+      return "block"
+    end
+  end
 
-  start_col = clamp(start_col, 0, start_len)
-  end_col = clamp(end_col, 0, end_len)
-
-  start_row, start_col, end_row, end_col =
-    normalize_range(start_row, start_col, end_row, end_col)
-
-  return start_row, start_col, end_row, end_col
+  return "char"
 end
 
-function M.get_visual_selection_and_range()
-  local bufnr = vim.api.nvim_get_current_buf()
-  local start_pos = vim.fn.getpos("'<")
-  local end_pos = vim.fn.getpos("'>")
+local function normalize_rows(start_row, end_row)
+  if start_row > end_row then
+    return end_row, start_row
+  end
+  return start_row, end_row
+end
 
-  local start_row = start_pos[2] - 1
-  local start_col = start_pos[3] - 1
-  local end_row = end_pos[2] - 1
-  local end_col = end_pos[3]
+local function normalize_range(sr, sc, er, ec)
+  if sr > er or (sr == er and sc > ec) then
+    return er, ec, sr, sc
+  end
+  return sr, sc, er, ec
+end
 
-  start_row, start_col, end_row, end_col =
-    sanitize_range(bufnr, start_row, start_col, end_row, end_col)
+local function extract_linewise(bufnr, start_row, end_row)
+  local lc = line_count(bufnr)
+  if lc == 0 then
+    return {
+      bufnr = bufnr,
+      text = "",
+      start_row = 0,
+      start_col = 0,
+      end_row = 0,
+      end_col = 0,
+      selection_type = "line",
+    }
+  end
 
-  local lines = vim.api.nvim_buf_get_text(bufnr, start_row, start_col, end_row, end_col, {})
-  local text = table.concat(lines, "\n")
+  start_row = clamp(start_row, 0, lc - 1)
+  end_row = clamp(end_row, 0, lc - 1)
+  start_row, end_row = normalize_rows(start_row, end_row)
+
+  local lines = vim.api.nvim_buf_get_lines(bufnr, start_row, end_row + 1, false)
 
   return {
     bufnr = bufnr,
-    text = text,
+    text = table.concat(lines, "\n"),
+    start_row = start_row,
+    start_col = 0,
+    end_row = end_row,
+    end_col = line_len(bufnr, end_row),
+    selection_type = "line",
+  }
+end
+
+local function extract_charwise(bufnr, start_row, start_col, end_row, end_col)
+  local lc = line_count(bufnr)
+  if lc == 0 then
+    return {
+      bufnr = bufnr,
+      text = "",
+      start_row = 0,
+      start_col = 0,
+      end_row = 0,
+      end_col = 0,
+      selection_type = "char",
+    }
+  end
+
+  start_row = clamp(start_row, 0, lc - 1)
+  end_row = clamp(end_row, 0, lc - 1)
+
+  start_col = clamp(start_col, 0, line_len(bufnr, start_row))
+  end_col = clamp(end_col, 0, line_len(bufnr, end_row))
+
+  start_row, start_col, end_row, end_col = normalize_range(start_row, start_col, end_row, end_col)
+
+  -- marks are inclusive; get_text end_col is exclusive
+  end_col = math.min(end_col + 1, line_len(bufnr, end_row))
+
+  local lines = vim.api.nvim_buf_get_text(bufnr, start_row, start_col, end_row, end_col, {})
+
+  return {
+    bufnr = bufnr,
+    text = table.concat(lines, "\n"),
     start_row = start_row,
     start_col = start_col,
     end_row = end_row,
     end_col = end_col,
+    selection_type = "char",
   }
 end
 
-local function split_lines(text)
-  return vim.split(text, "\n", { plain = true })
-end
-
-local function replace_visual_selection(range, replacement)
-  if not vim.api.nvim_buf_is_valid(range.bufnr) then
-    vim.notify("Original buffer is no longer valid", vim.log.levels.ERROR)
-    return
+local function extract_blockwise(bufnr, start_row, start_col, end_row, end_col)
+  local lc = line_count(bufnr)
+  if lc == 0 then
+    return {
+      bufnr = bufnr,
+      text = "",
+      start_row = 0,
+      start_col = 0,
+      end_row = 0,
+      end_col = 0,
+      selection_type = "block",
+    }
   end
 
-  local start_row, start_col, end_row, end_col =
-    sanitize_range(range.bufnr, range.start_row, range.start_col, range.end_row, range.end_col)
+  start_row = clamp(start_row, 0, lc - 1)
+  end_row = clamp(end_row, 0, lc - 1)
+  start_row, end_row = normalize_rows(start_row, end_row)
+
+  local left = math.min(start_col, end_col)
+  local right = math.max(start_col, end_col)
+
+  local out = {}
+
+  for row = start_row, end_row do
+    local line = get_line(bufnr, row)
+    local len = #line
+
+    if left > len then
+      table.insert(out, "")
+    else
+      table.insert(out, line:sub(left + 1, math.min(right + 1, len)))
+    end
+  end
+
+  return {
+    bufnr = bufnr,
+    text = table.concat(out, "\n"),
+    start_row = start_row,
+    start_col = left,
+    end_row = end_row,
+    end_col = right + 1,
+    selection_type = "block",
+  }
+end
+
+function M.get_visual_selection_and_range()
+  local bufnr = vim.api.nvim_get_current_buf()
+  local start_row, start_col = get_mark("'<")
+  local end_row, end_col = get_mark("'>")
+  local seltype = current_visual_type()
+
+  if seltype == "line" then
+    return extract_linewise(bufnr, start_row, end_row)
+  elseif seltype == "block" then
+    return extract_blockwise(bufnr, start_row, start_col, end_row, end_col)
+  else
+    return extract_charwise(bufnr, start_row, start_col, end_row, end_col)
+  end
+end
+
+local function replace_selection(selection, replacement)
+  if not selection or not vim.api.nvim_buf_is_valid(selection.bufnr) then
+    vim.notify("Original buffer is no longer valid", vim.log.levels.ERROR)
+    return false
+  end
+
+  if selection.selection_type == "block" then
+    vim.notify("Blockwise visual selections cannot be safely replaced with a single link", vim.log.levels.WARN)
+    return false
+  end
+
+  local replacement_lines = split_lines(replacement)
+
+  if selection.selection_type == "line" then
+    vim.api.nvim_buf_set_lines(selection.bufnr, selection.start_row, selection.end_row + 1, false, replacement_lines)
+    return true
+  end
 
   vim.api.nvim_buf_set_text(
-    range.bufnr,
-    start_row,
-    start_col,
-    end_row,
-    end_col,
-    { replacement }
+    selection.bufnr,
+    selection.start_row,
+    selection.start_col,
+    selection.end_row,
+    selection.end_col,
+    replacement_lines
   )
+
+  return true
+end
+
+function M.get_linewise_selection_and_range()
+  local bufnr = vim.api.nvim_get_current_buf()
+
+  local row1 = vim.fn.line("v") - 1
+  local row2 = vim.fn.line(".") - 1
+
+  if row1 > row2 then
+    row1, row2 = row2, row1
+  end
+
+  local lines = vim.api.nvim_buf_get_lines(bufnr, row1, row2 + 1, false)
+
+  return {
+    bufnr = bufnr,
+    text = table.concat(lines, "\n"),
+    start_row = row1,
+    start_col = 0,
+    end_row = row2,
+    end_col = 0,
+    selection_type = "line",
+  }
 end
 
 local function inject_content(lines, extracted_text)
   local new_lines = vim.deepcopy(lines)
   local extracted_lines = split_lines(extracted_text)
 
+  if extracted_text == nil or extracted_text == "" then
+    return new_lines
+  end
+
   if #new_lines > 0 and new_lines[#new_lines] ~= "" then
-    new_lines[#new_lines + 1] = ""
+    table.insert(new_lines, "")
   end
 
   vim.list_extend(new_lines, extracted_lines)
@@ -106,7 +277,14 @@ local function inject_content(lines, extracted_text)
 end
 
 function M.extract_to_templated_note(selection)
-  selection = selection or M.get_visual_selection_and_range()
+  if not selection then
+    selection = M.get_visual_selection_and_range()
+  end
+
+  if not selection then
+    vim.notify("Failed to capture visual selection", vim.log.levels.WARN)
+    return
+  end
 
   if not selection.text or vim.trim(selection.text) == "" then
     vim.notify("No visual selection found", vim.log.levels.WARN)
@@ -148,9 +326,13 @@ function M.extract_to_templated_note(selection)
       end
 
       local link = note:format_link()
-      replace_visual_selection(selection, link)
+      local replaced = replace_selection(selection, link)
 
-      vim.notify("Extracted selection to " .. note:display_name(), vim.log.levels.INFO)
+      if replaced then
+        vim.notify("Extracted selection to " .. note:display_name(), vim.log.levels.INFO)
+      else
+        vim.notify("Note created, but original selection was not replaced", vim.log.levels.WARN)
+      end
     end)
   end)
 end
