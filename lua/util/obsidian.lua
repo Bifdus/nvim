@@ -260,6 +260,10 @@ function M.get_linewise_selection_and_range()
   }
 end
 
+local function exit_visual_mode()
+  vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "n", false)
+end
+
 local function inject_content(lines, extracted_text)
   local new_lines = vim.deepcopy(lines)
   local extracted_lines = split_lines(extracted_text)
@@ -296,12 +300,17 @@ function M.extract_to_templated_note(selection)
       return
     end
 
-    vim.ui.select({ "fleeting", "reference", "structure", "process", "permanent" }, {
-      prompt = "Template:",
+    local client = obsidian.get_client()
+    local templates_dir = client and client.opts and client.opts.templates and client.opts.templates.folder
+
+    vim.ui.input({
+      prompt = templates_dir and ("Template in " .. templates_dir .. ": ") or "Template: ",
     }, function(template_name)
-      if not template_name then
+      if not template_name or vim.trim(template_name) == "" then
         return
       end
+
+      template_name = vim.trim(template_name)
 
       local note = Note.create({
         id = title,
@@ -329,6 +338,7 @@ function M.extract_to_templated_note(selection)
       local replaced = replace_selection(selection, link)
 
       if replaced then
+        exit_visual_mode()
         vim.notify("Extracted selection to " .. note:display_name(), vim.log.levels.INFO)
       else
         vim.notify("Note created, but original selection was not replaced", vim.log.levels.WARN)

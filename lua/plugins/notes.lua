@@ -20,9 +20,40 @@ return {
       { "<leader>ons", "<cmd>Obsidian search<cr>", desc = "obsidian search" },
       { "<leader>ono", "<cmd>Obsidian quick_switch<cr>", desc = "obsidian quickswitch" },
       { "<leader>onO", "<cmd>Obsidian open<cr>", desc = "obsidian open in app" },
+      {
+        "<leader>op",
+        function()
+          -- Get the current date and time in YYYYMMDD_HHMMSS format
+          local handle = io.popen("date +%Y%m%d_%H%M%S")
+          local timestamp = handle:read("*a")
+          handle:close()
+
+          -- Trim any leading/trailing whitespace that io.popen might include
+          timestamp = timestamp:gsub("^%s*(.-)%s*$", "%1")
+
+          -- Construct the desired filename
+          local filename = "pasted_image-" .. timestamp .. ".png"
+
+          -- Call Obsidian paste_img with the custom filename
+          vim.cmd("Obsidian paste_img " .. filename)
+        end,
+        desc = "Obsidian paste image from clipboard with custom name",
+      },
     },
     opts = {
       legacy_commands = false,
+      attachments = {
+        img_text_func = function(path)
+          local original_name = vim.fs.basename(tostring(path))
+          local modified_name = string.lower(original_name)
+
+          modified_name = modified_name:gsub("%s+", "_")
+          modified_name = modified_name:gsub("[^a-z0-9_-]", "")
+
+          local encoded_original_name = require("obsidian.util").urlencode(original_name)
+          return string.format("![%s](%s)", modified_name, encoded_original_name)
+        end,
+      },
 
       workspaces = {
         {
@@ -92,7 +123,7 @@ return {
       },
 
       ui = {
-        enable = true,
+        enable = false,
         -- checkboxes = {
         --   [" "] = { char = "", hl_group = "ObsidianTodo" },
         --   ["x"] = { char = "", hl_group = "ObsidianDone" },
@@ -117,19 +148,6 @@ return {
     cmd = "Org",
     dependencies = {
       { "danilshvalov/org-modern.nvim" },
-      -- {
-      --   "akinsho/org-bullets.nvim",
-      --   opts = {
-      --     concealcursor = true,
-      --     symbols = {
-      --       -- checkboxes = {
-      --       --   half = { "", "@org.checkbox.halfchecked" },
-      --       --   done = { "✓", "@org.checkbox.checked" },
-      --       --   todo = { " ", "@org.checkbox" },
-      --       -- },
-      --     },
-      --   },
-      -- },
       {
         "hamidi-dev/org-list.nvim",
         dependencies = { "tpope/vim-repeat" },
@@ -784,6 +802,12 @@ return {
     keys = {
       { "<leader>rm", "<cmd>RenderMarkdown<CR>", desc = "Render Markdown" },
     },
+  },
+  {
+    "jakewvincent/mkdnflow.nvim",
+    config = function()
+      require("mkdnflow").setup({})
+    end,
   },
 
   -- {

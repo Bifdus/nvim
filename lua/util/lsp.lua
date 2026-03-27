@@ -5,6 +5,7 @@ M.lsp_to_mason = {
   vtsls = "vtsls",
   basedpyright = "basedpyright",
   yamlls = "yaml-language-server",
+  bashls = "bash-language-server",
   clangd = "clangd",
   ruff = "ruff",
   tailwind = "tailwindcss-language-server",

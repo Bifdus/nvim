@@ -54,6 +54,17 @@ return {
     scope = { enabled = false },
     statuscolumn = { enabled = true },
     zen = { enabled = true },
+    image = {
+      enabled = true,
+      resolve = function(path, src)
+        local api = require("obsidian.api")
+        if api.path_is_note(path) then
+          return api.resolve_attachment_path(src)
+        end
+      end,
+      inline = false,
+      float = true,
+    },
     words = {
       enabled = true,
       debounce = 200, -- time in ms to wait before updating
