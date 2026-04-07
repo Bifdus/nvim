@@ -776,6 +776,10 @@ return {
             rendered = "",
           },
         },
+        indent = {
+          enabled = true,
+          per_level = 4,
+        },
         -- Add more options based on the plugin's documentation
         heading = {
           sign = false,
@@ -817,4 +821,8 @@ return {
   --     -- files = { "*.md" }, -- any .md file (instead of defaults)
   --   },
   -- },
+  --
+  {
+    "jbyuki/venn.nvim",
+  },
 }

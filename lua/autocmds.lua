@@ -15,6 +15,26 @@ vim.api.nvim_create_autocmd(
   { pattern = { "**/*.config.log" }, command = "setfiletype json", group = docker_config_log_group }
 )
 
+vim.api.nvim_create_autocmd({ "FileType" }, {
+  pattern = "venn",
+  callback = function()
+    vim.cmd([[setlocal ve=all]])
+    vim.cmd([[setlocal cursorcolumn]])
+    vim.cmd([[setlocal cursorline]])
+    vim.api.nvim_buf_set_keymap(0, "n", "J", "<C-v>j:VBox<CR>", { noremap = true, silent = true })
+    vim.api.nvim_buf_set_keymap(0, "n", "K", "<C-v>k:VBox<CR>", { noremap = true, silent = true })
+    vim.api.nvim_buf_set_keymap(0, "n", "L", "<C-v>l:VBox<CR>", { noremap = true, silent = true })
+    vim.api.nvim_buf_set_keymap(0, "n", "H", "<C-v>h:VBox<CR>", { noremap = true, silent = true })
+
+    vim.api.nvim_buf_set_keymap(0, "v", "f", ":VBox<CR>", { noremap = true, silent = true })
+
+    vim.cmd([[setlocal indentkeys=]])
+    vim.cmd([[setlocal indentexpr=]])
+    --NOTE: disables for all subsequent buffers, need to isolate to only venn filetypes 
+    vim.g.snacks_indent = false
+  end,
+})
+
 -- Close some filetypes with <q>
 vim.api.nvim_create_autocmd("FileType", {
   group = augroup("close_with_q"),

@@ -181,9 +181,5 @@ vim.keymap.set("n", "<leader>ct", function()
   require("copilot.suggestion").toggle_auto_trigger()
 end, { desc = "Toggle Copilot Ghost Text" })
 
-vim.keymap.set("x", "<leader>one", function()
-  local mod = require("util.obsidian")
-  local selection = mod.get_linewise_selection_and_range()
-
-  mod.extract_to_templated_note(selection)
-end)
+-- toggle keymappings for venn using <leader>v
+vim.api.nvim_set_keymap("n", "<leader>v", ":lua Toggle_venn()<CR>", { noremap = true })
