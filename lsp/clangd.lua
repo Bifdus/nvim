@@ -11,6 +11,8 @@
 --- - clangd relies on a [JSON compilation database](https://clang.llvm.org/docs/JSONCompilationDatabase.html)
 ---   specified as compile_commands.json, see https://clangd.llvm.org/installation#compile_commandsjson
 
+local util = require("util.lsp")
+
 -- https://clangd.llvm.org/extensions.html#switch-between-sourceheader
 local function switch_source_header(bufnr, client)
   local method_name = 'textDocument/switchSourceHeader'
@@ -65,7 +67,7 @@ end
 return {
   cmd = { 'clangd' },
   filetypes = { 'c', 'cpp', 'objc', 'objcpp', 'cuda' },
-  root_markers = {
+  root_dir = util.root_dir_with_fallback({
     '.clangd',
     '.clang-tidy',
     '.clang-format',
@@ -73,7 +75,7 @@ return {
     'compile_flags.txt',
     'configure.ac', -- AutoTools
     '.git',
-  },
+  }),
   capabilities = {
     textDocument = {
       completion = {

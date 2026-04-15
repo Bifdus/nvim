@@ -9,6 +9,7 @@ M.lsp_to_mason = {
   clangd = "clangd",
   ruff = "ruff",
   tailwind = "tailwindcss-language-server",
+  pasls = "pascal-language-server",
 }
 
 M.extra_tools = {
@@ -61,6 +62,38 @@ function M.root_markers_with_field(root_files, new_names, field, fname)
   end
 
   return root_files
+end
+
+--- Build a `root_dir` callback that prefers marker-based project roots and
+--- still attaches for standalone files by falling back to the file's parent dir.
+---
+--- @param root_markers (string|string[])[]
+--- @param opts? { fallback: '"cwd"'|fun(bufnr: integer, fname: string): string? }
+--- @return fun(bufnr: integer, on_dir: fun(root_dir?: string))
+function M.root_dir_with_fallback(root_markers, opts)
+  opts = opts or {}
+
+  return function(bufnr, on_dir)
+    local fname = vim.api.nvim_buf_get_name(bufnr)
+    local root = fname ~= "" and vim.fs.root(fname, root_markers) or nil
+
+    if root then
+      on_dir(root)
+      return
+    end
+
+    if type(opts.fallback) == "function" then
+      on_dir(opts.fallback(bufnr, fname))
+      return
+    end
+
+    if opts.fallback == "cwd" or fname == "" then
+      on_dir(vim.uv.cwd())
+      return
+    end
+
+    on_dir(vim.fs.dirname(fname))
+  end
 end
 
 return M

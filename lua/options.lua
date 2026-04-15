@@ -1,4 +1,7 @@
 vim.filetype.add({
+  extension = {
+    p = "pascal",
+  },
   pattern = {
     ["docker%-compose%.yml$"] = "yaml.docker-compose",
     ["docker%-compose%.yaml$"] = "yaml.docker-compose",

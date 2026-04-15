@@ -4,6 +4,8 @@
 ---
 --- `basedpyright`, a static type checker and language server for python
 
+local util = require("util.lsp")
+
 local function set_python_path(command)
   local path = command.args
   local clients = vim.lsp.get_clients({
@@ -24,7 +26,7 @@ end
 return {
   cmd = { "basedpyright-langserver", "--stdio" },
   filetypes = { "python" },
-  root_markers = {
+  root_dir = util.root_dir_with_fallback({
     "pyproject.toml",
     "setup.py",
     "setup.cfg",
@@ -32,7 +34,7 @@ return {
     "Pipfile",
     "pyrightconfig.json",
     ".git",
-  },
+  }),
   settings = {
     basedpyright = {
       autoSearchPaths = true,

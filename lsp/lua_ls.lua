@@ -1,8 +1,10 @@
+local util = require("util.lsp")
+
 ---@type vim.lsp.Config
 return {
   cmd = { 'lua-language-server' },
   filetypes = { 'lua' },
-  root_markers = {
+  root_dir = util.root_dir_with_fallback({
     '.luarc.json',
     '.luarc.jsonc',
     '.luacheckrc',
@@ -11,5 +13,5 @@ return {
     'selene.toml',
     'selene.yml',
     '.git',
-  },
+  }),
 }

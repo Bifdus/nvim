@@ -1,8 +1,10 @@
+local util = require("util.lsp")
+
 ---@type vim.lsp.Config
 return {
   cmd = { "yaml-language-server", "--stdio" },
   filetypes = { "yaml", "yaml.docker-compose", "yaml.gitlab", "yaml.helm-values" },
-  root_markers = { ".git" },
+  root_dir = util.root_dir_with_fallback({ ".git" }),
   settings = {
     -- https://github.com/redhat-developer/vscode-redhat-telemetry#how-to-disable-telemetry-reporting
     redhat = { telemetry = { enabled = false } },
