@@ -89,6 +89,9 @@ return {
           structure = {
             notes_subdir = "01 Notes",
           },
+          procedure = {
+            notes_subdir = "01 Notes",
+          },
           process = {
             notes_subdir = "01 Notes",
           },
@@ -102,6 +105,9 @@ return {
             notes_subdir = "03 Meetings",
           },
           reference = {
+            notes_subdir = "01 Notes",
+          },
+          concept = {
             notes_subdir = "01 Notes",
           },
         },
@@ -751,6 +757,7 @@ return {
       "nvim-treesitter/nvim-treesitter",
       "nvim-tree/nvim-web-devicons",
     },
+    enabled = true,
     config = function()
       -- Treat Telekasten buffers as markdown for treesitter-based renderers.
       vim.treesitter.language.register("markdown", "telekasten")
@@ -779,6 +786,7 @@ return {
         indent = {
           enabled = true,
           per_level = 4,
+          skip_heading = true,
         },
         -- Add more options based on the plugin's documentation
         heading = {
@@ -800,6 +808,34 @@ return {
         },
         -- },
       })
+
+      -- Render markdown highlights
+      local function set_render_markdown_highlights()
+        vim.api.nvim_set_hl(0, "RenderMarkdownH1Bg", { link = "DraculaPurpleBold" })
+        vim.api.nvim_set_hl(0, "RenderMarkdownH1", { link = "DraculaPurpleBold" })
+
+        vim.api.nvim_set_hl(0, "RenderMarkdownH2Bg", { link = "DraculaOrangeBold" })
+        vim.api.nvim_set_hl(0, "RenderMarkdownH2", { link = "DraculaOrangeBold" })
+
+        vim.api.nvim_set_hl(0, "RenderMarkdownH3Bg", { link = "DraculaGreenBold" })
+        vim.api.nvim_set_hl(0, "RenderMarkdownH3", { link = "DraculaGreenBold" })
+
+        vim.api.nvim_set_hl(0, "RenderMarkdownH4Bg", { fg = "#80FFEA", bold = true })
+        vim.api.nvim_set_hl(0, "RenderMarkdownH4", { fg = "#80FFEA", bold = true })
+
+        vim.api.nvim_set_hl(0, "RenderMarkdownH5Bg", { fg = "#FF80BF", bold = true })
+        vim.api.nvim_set_hl(0, "RenderMarkdownH5", { fg = "#FF80BF", bold = true })
+
+        vim.api.nvim_set_hl(0, "RenderMarkdownH6Bg", { link = "DraculaPurpleBold" })
+        vim.api.nvim_set_hl(0, "RenderMarkdownH6", { link = "DraculaPurpleBold" })
+
+        vim.api.nvim_set_hl(0, "RenderMarkdownBullet", { fg = "#FF80BF", bold = true })
+        vim.api.nvim_set_hl(0, "RenderMarkdownBullet", { fg = "#FF80BF", bold = true })
+      end
+
+      set_render_markdown_highlights()
+
+      vim.api.nvim_create_autocmd("ColorScheme", { callback = set_render_markdown_highlights })
     end,
     -- Optional: Lazy-load based on file type
     ft = { "markdown", "md", "telekasten" },
@@ -809,8 +845,13 @@ return {
   },
   {
     "jakewvincent/mkdnflow.nvim",
+    enabled = false,
     config = function()
-      require("mkdnflow").setup({})
+      require("mkdnflow").setup({
+        -- mappings = {
+        --   MkdnNextLink = { false },
+        -- },
+      })
     end,
   },
 

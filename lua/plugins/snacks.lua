@@ -53,7 +53,13 @@ return {
     explorer = { enabled = true },
     scope = { enabled = false },
     statuscolumn = { enabled = true },
-    zen = { enabled = true },
+    zen = { enabled = true, toggles = { dim = false } },
+    styles = {
+      snacks_image = {
+        relative = "editor",
+        col = -1,
+      },
+    },
     image = {
       enabled = true,
       resolve = function(path, src)
@@ -62,7 +68,11 @@ return {
           return api.resolve_attachment_path(src)
         end
       end,
-      inline = false,
+      doc = {
+        inline = false,
+        float = true,
+      },
+      inline = true,
       float = true,
     },
     words = {
@@ -77,6 +87,15 @@ return {
     profile = { enabled = true },
     picker = { enabled = false, sources = { explorer = { layout = { layout = { position = "right" } } } } },
     indent = {
+      filter = function(buf)
+        local ft = vim.bo[buf].filetype
+
+        if vim.tbl_contains({ "venn", "markdown" }, ft) then
+          return false
+        end
+
+        return vim.b[buf].snacks_indent ~= false and vim.bo[buf].buftype == ""
+      end,
       indent = {
         char = "│",
       },
@@ -180,7 +199,7 @@ return {
     { "<leader>sj", function() Snacks.picker.jumps() end, desc = "Jumps" },
     { "<leader>sk", function() Snacks.picker.keymaps() end, desc = "Keymaps" },
     { "<leader>sl", function() Snacks.picker.loclist() end, desc = "Location List" },
-    { "<leader>sm", function() Snacks.picker.marks() end, desc = "Marks" },
+    -- { "<leader>sm", function() Snacks.picker.marks() end, desc = "Marks" },
     { "<leader>sM", function() Snacks.picker.man() end, desc = "Man Pages" },
     { "<leader>sp", function() Snacks.picker.lazy() end, desc = "Search for Plugin Spec" },
     { "<leader>sq", function() Snacks.picker.qflist() end, desc = "Quickfix List" },

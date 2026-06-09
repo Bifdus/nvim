@@ -140,7 +140,10 @@ return {
             }),
           },
           markdown = {
+            augend.integer.alias.decimal, -- nonnegative and negative decimal number
             augend.misc.alias.markdown_header,
+            augend.semver.alias.semver, -- versioning (v1.1.2)
+            augend.date.alias["%Y/%m/%d"], -- date (2022/02/19, etc.)
           },
           json = {
             augend.integer.alias.decimal, -- nonnegative and negative decimal number

@@ -49,6 +49,8 @@ return {
       },
       formatters_by_ft = {
         lua = { "stylua" },
+        bash = { "shfmt" },
+        sh = { "shfmt" },
         python = { "black" },
         cs = { "csharpier" },
         javascript = { "prettierd", "prettier", stop_after_first = true },
@@ -61,7 +63,7 @@ return {
         json = { "prettierd", "prettier" },
         yaml = { "prettierd", "prettier" },
         sql = { "sqlfluff" },
-        xml = {"xmlformat"}
+        xml = { "xmlformat" },
       },
     },
   },
