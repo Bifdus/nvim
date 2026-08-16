@@ -174,15 +174,13 @@ return {
       { "<Leader>oa", "<cmd>Org agenda<cr>", desc = "org agenda" },
       { "<Leader>oc", "<cmd>Org capture<cr>", desc = "org capture" },
       { "<Leader>ow", "<cmd>Org agenda w<cr>", desc = "org work agenda" },
-      { "<Leader>op", "<cmd>Org agenda p<cr>", desc = "org personal agenda" },
       { "<Leader>oA", "<cmd>Org agenda A<cr>", desc = "org all agenda" },
       { "<Leader>oTa", "<cmd>EasyAlign|<cr>", desc = "org table align", mode = "v" },
       { "<Leader>oTl", "<cmd>lua align_org_table()<cr>", desc = "org table align (lua)", mode = "v" },
     },
     opts = {
       org_agenda_files = {
-        "~/orgfiles/second-brain/work/**/*.org",
-        "~/orgfiles/second-brain/personal/**/*.org",
+        "~/orgfiles/**/*",
       },
 
       org_default_notes_file = "~/orgfiles/refile.org",
@@ -212,19 +210,6 @@ return {
             },
           },
         },
-        p = {
-          description = "🏠 Personal Focus",
-          types = {
-            {
-              type = "agenda",
-              org_agenda_files = { "~/orgfiles/second-brain/personal/**/*.org" },
-            },
-            {
-              type = "tags_todo",
-              org_agenda_files = { "~/orgfiles/second-brain/personal/**/*.org" },
-            },
-          },
-        },
         T = {
           description = "📋 Triage / Planning",
           types = {
@@ -246,54 +231,56 @@ return {
       },
 
       org_todo_keywords = {
-        "BACKLOG(B)",
+        "BACKLOG(b)",
         "TODO(t)",
-        "IN-PROGRESS(p)",
-        "IN-REVIEW(r)",
-        "TESTING(e)",
-        "BLOCKED(l)",
+        "NEXT(n)",
+        -- "IN-PROGRESS(p)",
+        -- "IN-REVIEW(r)",
+        -- "TESTING(e)",
+        -- "BLOCKED(l)",
         "WAITING(w)",
-        "ON-HOLD(h)",
+        -- "ON-HOLD(h)",
         "|",
         "DONE(d)",
-        "CANCELLED(c)",
-        "REJECTED(j)",
+        -- "CANCELLED(c)",
+        -- "REJECTED(j)",
       },
 
       org_todo_keyword_faces = {
         BACKLOG = ":foreground #a8a8a8",
         TODO = ":foreground #0088ff :weight bold",
-        ["IN-PROGRESS"] = ":foreground #ffd700 :weight bold",
-        ["IN-REVIEW"] = ":foreground #00d7d7 :weight bold",
-        TESTING = ":foreground #87ceff :weight bold",
-        BLOCKED = ":foreground #ff2020 :background #5c0000 :weight bold",
-        WAITING = ":foreground #ff5faf :weight bold",
-        ["ON-HOLD"] = ":foreground #d7aaff :weight bold",
+        -- ["IN-PROGRESS"] = ":foreground #ffd700 :weight bold",
+        -- ["IN-REVIEW"] = ":foreground #00d7d7 :weight bold",
+        NEXT = ":foreground #00d7d7 :weight bold",
+        -- TESTING = ":foreground #87ceff :weight bold",
+        -- BLOCKED = ":foreground #ff2020 :background #5c0000 :weight bold",
+        WAITING = ":foreground #ffd700 :weight bold",
+        -- WAITING = ":foreground #ff5faf :weight bold",
+        -- ["ON-HOLD"] = ":foreground #d7aaff :weight bold",
         DONE = ":foreground #5fff5f :weight bold",
-        CANCELLED = ":foreground #585858 :weight bold",
-        REJECTED = ":foreground #d75f00 :weight bold",
+        -- CANCELLED = ":foreground #585858 :weight bold",
+        -- REJECTED = ":foreground #d75f00 :weight bold",
       },
 
       org_tag_faces = {
-        IDEA = ":foreground #ffc600 :weight bold",
-        RAW = ":foreground #af87ff :slant italic",
+        -- IDEA = ":foreground #ffc600 :weight bold",
+        -- RAW = ":foreground #af87ff :slant italic",
         PROJECT = ":foreground #ffc600",
-        APPLICATION = ":foreground #ffc600",
-        HABIT = ":foreground #ff9d00",
-        NOTE = ":foreground #9effff :slant italic",
-        JOURNAL = ":foreground #9effff :slant italic",
-        LINK = ":foreground #0088ff",
-        WORK = ":foreground #a5ff90",
-        PERSONAL = ":foreground #0088ff",
-        NEOVIM = ":foreground #a5ff90 :weight bold",
-        MEETING = ":foreground #5fffaf",
-        PHONE = ":foreground #5fffaf",
+        -- APPLICATION = ":foreground #ffc600",
+        -- HABIT = ":foreground #ff9d00",
+        -- NOTE = ":foreground #9effff :slant italic",
+        -- JOURNAL = ":foreground #9effff :slant italic",
+        -- LINK = ":foreground #0088ff",
+        -- WORK = ":foreground #a5ff90",
+        -- NEOVIM = ":foreground #a5ff90 :weight bold",
+        -- MEETING = ":foreground #5fffaf",
+        -- PHONE = ":foreground #5fffaf",
         BUG = ":foreground #ff628c :weight bold",
-        FEATURE = ":foreground #ffc600",
-        REFACTOR = ":foreground #9effff",
-        DOCS = ":foreground #9effff",
-        TESTS = ":foreground #9effff",
-        CRITICAL = ":foreground #ff628c :weight bold",
+        -- FEATURE = ":foreground #ffc600",
+        -- REFACTOR = ":foreground #9effff",
+        -- DOCS = ":foreground #9effff",
+        -- TESTS = ":foreground #9effff",
+        -- CRITICAL = ":foreground #ff628c :weight bold",
         HIGH = ":foreground #ff9d00 :weight bold",
         LOW = ":foreground #a8a8a8 :slant italic",
         INCIDENT = ":foreground #ff628c :weight bold",
@@ -306,186 +293,54 @@ return {
       },
 
       org_capture_templates = {
-        i = {
-          description = "Idea",
-          subtemplates = {
-            i = {
-              description = "Raw Idea",
-              template = "* %? :IDEA:RAW:",
-              target = "~/orgfiles/second-brain/work/ideas/inbox.org",
-              properties = { empty_lines = { before = 1 } },
-            },
-            p = {
-              description = "Project",
-              template = "* %? :IDEA:PROJECT:",
-              target = "~/orgfiles/second-brain/work/ideas/project.org",
-              properties = { empty_lines = { before = 1 } },
-            },
-            a = {
-              description = "Application",
-              template = "* %? :IDEA:APPLICATION:",
-              target = "~/orgfiles/second-brain/work/ideas/application.org",
-              properties = { empty_lines = { before = 1 } },
-            },
-            n = {
-              description = "Neovim",
-              template = "* %? :IDEA:NEOVIM:",
-              target = "~/orgfiles/second-brain/work/ideas/neovim.org",
-              properties = { empty_lines = { before = 1 } },
-            },
-            w = {
-              description = "Work",
-              template = "* %? :IDEA:WORK:",
-              target = "~/orgfiles/second-brain/work/ideas/inbox.org",
-              properties = { empty_lines = { before = 1 } },
-            },
-          },
-        },
+        -- i = {
+        --   description = "Idea",
+        --   subtemplates = {
+        --     i = {
+        --       description = "Raw Idea",
+        --       template = "* %? :IDEA:RAW:",
+        --       target = "~/orgfiles/second-brain/work/ideas/inbox.org",
+        --       properties = { empty_lines = { before = 1 } },
+        --     },
+        --     p = {
+        --       description = "Project",
+        --       template = "* %? :IDEA:PROJECT:",
+        --       target = "~/orgfiles/second-brain/work/ideas/project.org",
+        --       properties = { empty_lines = { before = 1 } },
+        --     },
+        --     a = {
+        --       description = "Application",
+        --       template = "* %? :IDEA:APPLICATION:",
+        --       target = "~/orgfiles/second-brain/work/ideas/application.org",
+        --       properties = { empty_lines = { before = 1 } },
+        --     },
+        --     n = {
+        --       description = "Neovim",
+        --       template = "* %? :IDEA:NEOVIM:",
+        --       target = "~/orgfiles/second-brain/work/ideas/neovim.org",
+        --       properties = { empty_lines = { before = 1 } },
+        --     },
+        --     w = {
+        --       description = "Work",
+        --       template = "* %? :IDEA:WORK:",
+        --       target = "~/orgfiles/second-brain/work/ideas/inbox.org",
+        --       properties = { empty_lines = { before = 1 } },
+        --     },
+        --   },
+        -- },
 
         t = {
-          description = "Task",
-          subtemplates = {
-            p = {
-              description = "Personal",
-              template = "* TODO %? :TASK:PERSONAL:\n  SCHEDULED: %U DEADLINE: %t",
-              target = "~/orgfiles/second-brain/personal/agenda/todos.org",
-              properties = { empty_lines = { before = 1 } },
-            },
-            n = {
-              description = "Neovim",
-              template = "* TODO %? :NEOVIM:TASK:\n  SCHEDULED: %U DEADLINE: %t",
-              target = "~/orgfiles/second-brain/personal/agenda/todos.org",
-              properties = { empty_lines = { before = 1 } },
-            },
-            w = {
-              description = "Work",
-              template = "* TODO %? :TASK:WORK:\n  SCHEDULED: %U DEADLINE: %t",
-              target = "~/orgfiles/second-brain/work/agenda/todos.org",
-              properties = { empty_lines = { before = 1 } },
-            },
-          },
-        },
-
-        x = {
-          description = "Incident",
-          subtemplates = {
-            w = {
-              description = "Work incident log",
-              target = "~/orgfiles/second-brain/work/agenda/incidents.org",
-              template = "* TODO %^{Incident title} :WORK:INCIDENT:\n  SCHEDULED: %U\n  :PROPERTIES:\n  :AREA: %^{Area|backend|infra|client|network|service}\n  :SYSTEM: %^{System}\n  :END:\n\n** Summary\n%?\n\n** Timeline\n- [%<%H:%M>] Incident started / observed\n\n** Investigation\n- \n\n** Actions\n- \n\n** Outcome\n- \n\n** Convert to notes\n- [ ] Create troubleshooting note\n- [ ] Create permanent note\n- [ ] Create postmortem note\n",
-              properties = { empty_lines = { before = 1 } },
-            },
-          },
-        },
-
-        n = {
-          description = "Note",
-          subtemplates = {
-            p = {
-              description = "Personal",
-              template = "* %^{Title} :NOTE:\n  %U\n\n%?",
-              target = "~/orgfiles/second-brain/personal/notes/inbox.org",
-              properties = { empty_lines = { before = 1 } },
-            },
-            w = {
-              description = "Work",
-              template = "* %^{Title} :NOTE:WORK:\n  %U\n\n%?",
-              target = "~/orgfiles/second-brain/work/notes/inbox.org",
-              properties = { empty_lines = { before = 1 } },
-            },
-          },
-        },
-
-        j = {
-          description = "Journal",
-          subtemplates = {
-            p = {
-              description = "Personal",
-              target = "~/orgfiles/second-brain/personal/journal/inbox.org",
-              template = "**** [%<%I:%M %p>] %?",
-              datetree = { tree_type = "day", reversed = true },
-              properties = { empty_lines = { before = 1 } },
-            },
-            w = {
-              description = "Work",
-              target = "~/orgfiles/second-brain/work/journal/inbox.org",
-              template = "**** [%<%I:%M %p>] %? :WORK:",
-              datetree = { tree_type = "day", reversed = true },
-              properties = { empty_lines = { before = 1 } },
-            },
-          },
-        },
-
-        m = {
-          description = "Meeting",
-          subtemplates = {
-            p = {
-              description = "Personal",
-              template = "* MEETING with %? :MEETING:\n  SCHEDULED: %t",
-              target = "~/orgfiles/second-brain/personal/agenda/calls.org",
-              properties = { empty_lines = { before = 1 } },
-            },
-            w = {
-              description = "Work",
-              template = "* MEETING with %? :MEETING:WORK:\n  SCHEDULED: %t",
-              target = "~/orgfiles/second-brain/work/agenda/calls.org",
-              properties = { empty_lines = { before = 1 } },
-            },
-          },
-        },
-
-        p = {
-          description = "Phone Call",
-          subtemplates = {
-            p = {
-              description = "Personal",
-              template = "* CALL with %? :PHONE:\n  SCHEDULED: %t",
-              target = "~/orgfiles/second-brain/personal/agenda/calls.org",
-              properties = { empty_lines = { before = 1 } },
-            },
-            w = {
-              description = "Work",
-              template = "* CALL with %? :PHONE:WORK:\n  SCHEDULED: %t",
-              target = "~/orgfiles/second-brain/work/agenda/calls.org",
-              properties = { empty_lines = { before = 1 } },
-            },
-          },
-        },
-
-        h = {
-          description = "Habit",
-          subtemplates = {
-            p = {
-              description = "Personal",
-              template = "* TODO %? :HABIT:\n  SCHEDULED: %t\n  :PROPERTIES:\n  :STYLE: habit\n  :REPEAT_TO_STATE: TODO\n  :END:",
-              target = "~/orgfiles/second-brain/personal/agenda/habits.org",
-              properties = { empty_lines = { before = 1 } },
-            },
-            w = {
-              description = "Work",
-              template = "* TODO %? :HABIT:WORK:\n  SCHEDULED: %t\n  :PROPERTIES:\n  :STYLE: habit\n  :REPEAT_TO_STATE: TODO\n  :END:",
-              target = "~/orgfiles/second-brain/work/agenda/habits.org",
-              properties = { empty_lines = { before = 1 } },
-            },
-          },
-        },
-
-        l = {
-          description = "Link",
-          subtemplates = {
-            r = {
-              description = "Useful resource links",
-              template = "  - [[%^{Link||}][%^{Description}]] :LINK:",
-              headline = "Useful resource links",
-              target = "~/orgfiles/second-brain/personal/vocabulary/links.org",
-            },
-          },
+          description = "Todo",
+          template = "* TODO %?\n  %U",
+          target = "~/orgfiles/refile.org",
+          properties = { empty_lines = { before = 1 } },
         },
       },
     },
     config = function(_, opts)
       local Menu = require("org-modern.menu")
 
+      opts.win_split_mode = 'tabnew'
       opts.ui = opts.ui or {}
       opts.ui.menu = {
         handler = function(data)
@@ -624,7 +479,6 @@ return {
 
       local org_files = {}
       vim.list_extend(org_files, glob_list("~/orgfiles/second-brain/work/**/*.org"))
-      vim.list_extend(org_files, glob_list("~/orgfiles/second-brain/personal/**/*.org"))
 
       local archive = E("~/orgfiles/archive.org")
       org_files = vim.tbl_filter(function(path)
@@ -694,15 +548,15 @@ return {
             end,
           },
           {
-            name = "💼 Work",
+            name = "💼 BHP",
             matcher = function(i)
-              return has_tag(i, "WORK")
+              return has_tag(i, "BHP")
             end,
           },
           {
-            name = "🏠 Personal",
+            name = "💼 HAFAS",
             matcher = function(i)
-              return has_tag(i, "PERSONAL")
+              return has_tag(i, "HAFAS")
             end,
           },
         },

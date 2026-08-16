@@ -13,6 +13,9 @@ vim.keymap.set({ "n", "x" }, "S", "<Nop>")
 vim.keymap.set({ "n", "x" }, "<Down>", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true, desc = "Down" })
 vim.keymap.set({ "n", "x" }, "<Up>", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true, desc = "Up" })
 
+vim.keymap.set({ "n" }, "<leader>sm", "<cmd>messages<cr>", { desc = "Show Messages" })
+vim.keymap.set({ "n" }, "<leader>qr", "<cmd>restart<cr>", { desc = "Quick Restart" })
+
 -----------------------------------------------------------------------------
 
 -- Shift tab to dedent
@@ -183,3 +186,51 @@ end, { desc = "Toggle Copilot Ghost Text" })
 
 -- toggle keymappings for venn using <leader>v
 vim.api.nvim_set_keymap("n", "<leader>v", ":lua Toggle_venn()<CR>", { noremap = true })
+
+-- local harpoon = require("harpoon")
+--
+-- -- REQUIRED
+-- harpoon:setup()
+-- -- REQUIRED
+--
+-- vim.keymap.set("n", "<leader>a", function()
+--   harpoon:list():add()
+-- end)
+-- vim.keymap.set("n", "<C-e>", function()
+--   harpoon.ui:toggle_quick_menu(harpoon:list())
+-- end)
+
+-- vim.keymap.set("n", "<C-h>", function()
+--   harpoon:list():select(1)
+-- end)
+-- vim.keymap.set("n", "<C-t>", function()
+--   harpoon:list():select(2)
+-- end)
+-- vim.keymap.set("n", "<C-n>", function()
+--   harpoon:list():select(3)
+-- end)
+-- vim.keymap.set("n", "<C-s>", function()
+--   harpoon:list():select(4)
+-- end)
+
+-- Toggle previous & next buffers stored within Harpoon list
+-- vim.keymap.set("n", "<C-S-P>", function()
+--   harpoon:list():prev()
+-- end)
+-- vim.keymap.set("n", "<C-S-N>", function()
+--   harpoon:list():next()
+-- end)
+--
+-- local nav = require("util.fallback_lsp")
+--
+-- vim.keymap.set("n", "gd", nav.definition, { desc = "Goto definition" })
+-- vim.keymap.set("n", "gD", nav.declaration, { desc = "Goto declaration" })
+-- vim.keymap.set("n", "gr", nav.references, { desc = "Goto references" })
+-- vim.keymap.set("n", "gi", nav.implementation, { desc = "Goto implementation" })
+-- vim.keymap.set("n", "K", nav.hover, { desc = "Hover / search symbol" })
+--
+-- vim.keymap.set("n", "<leader>ds", nav.document_symbols, { desc = "Document symbols" })
+-- vim.keymap.set("n", "<leader>ws", nav.workspace_symbols, { desc = "Workspace symbols" })
+--
+-- vim.keymap.set("n", "gb", "<C-t>", { desc = "Jump back" })
+vim.api.nvim_set_keymap('n', '<leader>cc', 'i- [ ] ', { noremap = true, silent = true })

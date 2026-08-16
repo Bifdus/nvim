@@ -9,7 +9,7 @@ M.lsp_to_mason = {
   clangd = "clangd",
   ruff = "ruff",
   tailwind = "tailwindcss-language-server",
-  pasls = "pascal-language-server",
+  -- pasls = "pascal-language-server",
 }
 
 M.extra_tools = {

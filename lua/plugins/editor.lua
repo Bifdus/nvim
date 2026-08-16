@@ -404,6 +404,7 @@ return {
           "typescript",
           "typescriptreact",
           "markdown",
+          "vim",
         },
         excludes = { "lazy", "mason", "help" },
       },
@@ -412,6 +413,7 @@ return {
   {
     "altermo/ultimate-autopair.nvim",
     event = { "InsertEnter", "CmdlineEnter" },
+    enabled = false,
     branch = "v0.6", --recommended as each new version will have breaking changes
     opts = {},
   },

@@ -9,6 +9,8 @@ return {
         javascriptreact = { "eslint_d" },
         typescript = { "eslint_d" },
         typescriptreact = { "eslint_d" },
+        bash = { "shellcheck" },
+        sh = { "shellcheck" },
       }
       -- Create autocommand which carries out the actual linting
       -- on the specified events.

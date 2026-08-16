@@ -9,7 +9,7 @@ return {
   { "nvchad/volt", lazy = false },
   {
     "nvchad/minty",
-    opts = { filetypes = { "css", "html", "typescript", "javascript", "tsx", "ts", "jsx" } },
+    opts = { filetypes = { "css", "html", "typescript", "javascript", "tsx", "ts", "jsx", "vim" } },
     config = function(_, opts)
       require("minty").setup(opts)
     end,
