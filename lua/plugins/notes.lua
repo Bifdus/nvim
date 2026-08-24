@@ -340,7 +340,7 @@ return {
     config = function(_, opts)
       local Menu = require("org-modern.menu")
 
-      opts.win_split_mode = 'tabnew'
+      opts.win_split_mode = "tabnew"
       opts.ui = opts.ui or {}
       opts.ui.menu = {
         handler = function(data)
@@ -596,11 +596,11 @@ return {
   {
     "iamcco/markdown-preview.nvim",
     ft = { "markdown" },
-    -- cmd = { 'MarkdownPreviewToggle', 'MarkdownPreview', 'MarkdownPreviewStop' },
+    cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
     build = "cd app && yarn install",
-    init = function()
-      vim.g.mkdp_browser = "Firefox"
-    end,
+    -- init = function()
+    --   vim.g.mkdp_browser = "wslview"
+    -- end,
   },
 
   -----------------------------------------------------------------------------
