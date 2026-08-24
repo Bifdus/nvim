@@ -163,6 +163,8 @@ return {
 
       org_default_notes_file = "~/orgfiles/refile.org",
       org_archive_location = "~/orgfiles/archive.org::",
+      org_startup_indented = true,
+      org_startup_folded = "content",
 
       org_todo_keywords = {
         "TODO(t)",
