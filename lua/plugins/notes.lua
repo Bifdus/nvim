@@ -172,6 +172,13 @@ return {
         "DONE(d)",
       },
 
+      org_todo_keyword_faces = {
+        TODO = ":foreground #8be9fd :weight bold", -- Dracula cyan
+        NEXT = ":foreground #bd93f9 :weight bold", -- Dracula purple
+        WAITING = ":foreground #ffb86c :weight bold", -- Dracula orange
+        DONE = ":foreground #50fa7b :weight bold", -- Dracula green
+      },
+
       org_capture_templates = {
         t = {
           description = "Task",
