@@ -155,6 +155,14 @@ return {
     keys = {
       { "<Leader>oa", "<cmd>Org agenda<cr>", desc = "org agenda" },
       { "<Leader>oc", "<cmd>Org capture<cr>", desc = "org capture" },
+      {
+        "<Leader>or",
+        function()
+          require("util.org_refile").pick_destination()
+        end,
+        ft = "org",
+        desc = "Org: pick refile destination",
+      },
     },
     opts = {
       org_agenda_files = {
@@ -203,9 +211,15 @@ return {
           org_note_finalize = { "<C-c>", "<leader>wd", desc = "Save note below headline" },
           org_note_kill = { "<prefix>k", "<leader>wD", desc = "Discard note" },
         },
+        capture = {
+          -- Replaced by the Snacks destination picker below.
+          org_capture_refile = false,
+        },
         org = {
           org_add_note = { "<prefix>na", desc = "Append note below headline" },
           org_cycle = false,
+          -- Replaced by the Snacks destination picker below.
+          org_refile = false,
         },
       },
     },
@@ -239,23 +253,27 @@ return {
         org.action("org_mappings.open_at_point")
       end
 
-      local function set_org_return(buf)
+      local function set_org_keymaps(buf)
         vim.keymap.set("n", "<CR>", org_return, {
           buffer = buf,
           desc = "Org: context action",
           silent = true,
+        })
+        vim.keymap.set("n", "<leader>or", require("util.org_refile").pick_destination, {
+          buffer = buf,
+          desc = "Org: pick refile destination",
         })
       end
 
       vim.api.nvim_create_autocmd("FileType", {
         pattern = "org",
         callback = function(ev)
-          set_org_return(ev.buf)
+          set_org_keymaps(ev.buf)
         end,
       })
 
       if vim.bo.filetype == "org" then
-        set_org_return(0)
+        set_org_keymaps(0)
       end
     end,
   },

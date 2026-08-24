@@ -204,6 +204,12 @@ return {
     opts = {
       -- fold_virt_text_handler = require('custom.functions.utils').fold_handler,
       provider_selector = function(bufnr, filetype)
+        -- Org starts with its configured content folding, then switches to
+        -- manual folds in after/ftplugin/org.lua.  Letting UFO manage this
+        -- buffer would refresh and close those folds on every edit/write.
+        if filetype == "org" then
+          return ""
+        end
         return { "treesitter", "indent" }
       end,
       -- Terminal input normally sends <C-i> as <Tab>. Setting to empty for now

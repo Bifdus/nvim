@@ -85,7 +85,7 @@ return {
       modes = { "n", "i", "c" }, -- modes to show references
     },
     profile = { enabled = true },
-    picker = { enabled = false, sources = { explorer = { layout = { layout = { position = "right" } } } } },
+    picker = { enabled = true, sources = { explorer = { layout = { layout = { position = "right" } } } } },
     indent = {
       filter = function(buf)
         local ft = vim.bo[buf].filetype
