@@ -206,6 +206,13 @@ return {
       provider_selector = function(bufnr, filetype)
         return { "treesitter", "indent" }
       end,
+      -- Terminal input normally sends <C-i> as <Tab>. Setting to empty for now
+      -- TODO: find a suitable bind 
+      preview = {
+        mappings = {
+          switch = "",
+        },
+      },
     },
     config = function(_, opts)
       require("ufo").setup(opts)
