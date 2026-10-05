@@ -40,7 +40,15 @@ return {
         Snacks.toggle.zen():map("<leader>uz")
         Snacks.toggle.treesitter():map("<leader>uT")
         Snacks.toggle.diagnostics():map("<leader>ud")
-        require("util.format").snacks_toggle():map("<leader>uf")
+        Snacks.toggle({
+          name = "Auto Format",
+          get = function()
+            return vim.g.autoformat
+          end,
+          set = function(state)
+            vim.g.autoformat = state
+          end,
+        }):map("<leader>uf")
       end,
     })
   end,
