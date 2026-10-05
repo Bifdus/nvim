@@ -234,3 +234,4 @@ vim.api.nvim_set_keymap("n", "<leader>v", ":lua Toggle_venn()<CR>", { noremap = 
 --
 -- vim.keymap.set("n", "gb", "<C-t>", { desc = "Jump back" })
 vim.api.nvim_set_keymap('n', '<leader>cc', 'i- [ ] ', { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<leader>oA", "<cmd>OrgSuperAgenda!<cr>", { silent = true })
