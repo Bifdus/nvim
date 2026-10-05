@@ -167,15 +167,6 @@ vim.keymap.set("n", "<leader>a", "<cmd>AerialToggle!<CR>")
 vim.keymap.set("n", "<leader>pc", "<cmd>Huefy<cr>")
 vim.keymap.set("n", "<leader>ps", "<cmd>Shades<cr>")
 
------------------------------------------------------------------------------
---- Spider
--- vim.keymap.set({ "n", "o", "x" }, "w", "<cmd>lua require('spider').motion('w')<CR>", { desc = "Spider-w" })
--- vim.keymap.set({ "n", "o", "x" }, "e", "<cmd>lua require('spider').motion('e')<CR>", { desc = "Spider-e" })
--- vim.keymap.set({ "n", "o", "x" }, "b", "<cmd>lua require('spider').motion('b')<CR>", { desc = "Spider-b" })
--- vim.keymap.set("i", "<C-f>", "<Esc>l<cmd>lua require('spider').motion('w')<CR>i")
--- vim.keymap.set("i", "<C-b>", "<Esc><cmd>lua require('spider').motion('b')<CR>i")
--- vim.keymap.set("n", "cw", "c<cmd>lua require('spider').motion('e')<CR>")
-
 -- LSP
 vim.keymap.set("n", "<leader>li", "<cmd>checkhealth vim.lsp<CR>", { desc = "Lsp Info" })
 
@@ -187,51 +178,28 @@ end, { desc = "Toggle Copilot Ghost Text" })
 -- toggle keymappings for venn using <leader>v
 vim.api.nvim_set_keymap("n", "<leader>v", ":lua Toggle_venn()<CR>", { noremap = true })
 
--- local harpoon = require("harpoon")
---
--- -- REQUIRED
--- harpoon:setup()
--- -- REQUIRED
---
--- vim.keymap.set("n", "<leader>a", function()
---   harpoon:list():add()
--- end)
--- vim.keymap.set("n", "<C-e>", function()
---   harpoon.ui:toggle_quick_menu(harpoon:list())
--- end)
-
--- vim.keymap.set("n", "<C-h>", function()
---   harpoon:list():select(1)
--- end)
--- vim.keymap.set("n", "<C-t>", function()
---   harpoon:list():select(2)
--- end)
--- vim.keymap.set("n", "<C-n>", function()
---   harpoon:list():select(3)
--- end)
--- vim.keymap.set("n", "<C-s>", function()
---   harpoon:list():select(4)
--- end)
-
--- Toggle previous & next buffers stored within Harpoon list
--- vim.keymap.set("n", "<C-S-P>", function()
---   harpoon:list():prev()
--- end)
--- vim.keymap.set("n", "<C-S-N>", function()
---   harpoon:list():next()
--- end)
---
--- local nav = require("util.fallback_lsp")
---
--- vim.keymap.set("n", "gd", nav.definition, { desc = "Goto definition" })
--- vim.keymap.set("n", "gD", nav.declaration, { desc = "Goto declaration" })
--- vim.keymap.set("n", "gr", nav.references, { desc = "Goto references" })
--- vim.keymap.set("n", "gi", nav.implementation, { desc = "Goto implementation" })
--- vim.keymap.set("n", "K", nav.hover, { desc = "Hover / search symbol" })
---
--- vim.keymap.set("n", "<leader>ds", nav.document_symbols, { desc = "Document symbols" })
--- vim.keymap.set("n", "<leader>ws", nav.workspace_symbols, { desc = "Workspace symbols" })
---
--- vim.keymap.set("n", "gb", "<C-t>", { desc = "Jump back" })
-vim.api.nvim_set_keymap('n', '<leader>cc', 'i- [ ] ', { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<leader>cc", "i- [ ] ", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "<leader>oA", "<cmd>OrgSuperAgenda!<cr>", { silent = true })
+
+-----------------------------------------------------------------------------
+--- Disabled alternates: uncomment alongside the matching plugin spec
+
+-- nvim-spider (lua/plugins/editor.lua)
+-- vim.keymap.set({ "n", "o", "x" }, "w", "<cmd>lua require('spider').motion('w')<CR>", { desc = "Spider-w" })
+-- vim.keymap.set({ "n", "o", "x" }, "e", "<cmd>lua require('spider').motion('e')<CR>", { desc = "Spider-e" })
+-- vim.keymap.set({ "n", "o", "x" }, "b", "<cmd>lua require('spider').motion('b')<CR>", { desc = "Spider-b" })
+-- vim.keymap.set("i", "<C-f>", "<Esc>l<cmd>lua require('spider').motion('w')<CR>i")
+-- vim.keymap.set("i", "<C-b>", "<Esc><cmd>lua require('spider').motion('b')<CR>i")
+-- vim.keymap.set("n", "cw", "c<cmd>lua require('spider').motion('e')<CR>")
+
+-- harpoon (no spec yet)
+-- local harpoon = require("harpoon")
+-- harpoon:setup()
+-- vim.keymap.set("n", "<leader>a", function() harpoon:list():add() end)
+-- vim.keymap.set("n", "<C-e>", function() harpoon.ui:toggle_quick_menu(harpoon:list()) end)
+-- vim.keymap.set("n", "<C-h>", function() harpoon:list():select(1) end)
+-- vim.keymap.set("n", "<C-t>", function() harpoon:list():select(2) end)
+-- vim.keymap.set("n", "<C-n>", function() harpoon:list():select(3) end)
+-- vim.keymap.set("n", "<C-s>", function() harpoon:list():select(4) end)
+-- vim.keymap.set("n", "<C-S-P>", function() harpoon:list():prev() end)
+-- vim.keymap.set("n", "<C-S-N>", function() harpoon:list():next() end)
