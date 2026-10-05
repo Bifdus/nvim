@@ -7,20 +7,8 @@ vim.diagnostic.config({
   underline = false,
   update_in_insert = false,
   severity_sort = true,
-  -- TODO: handled by tiny diagnostic inlay hints, need to decide what's best
-  -- virtual_text = {
-  --   source = "if_many",
-  --   spacing = 2,
-  --   format = function(d)
-  --     local by_sev = {
-  --       [vim.diagnostic.severity.ERROR] = d.message,
-  --       [vim.diagnostic.severity.WARN] = d.message,
-  --       [vim.diagnostic.severity.INFO] = d.message,
-  --       [vim.diagnostic.severity.HINT] = d.message,
-  --     }
-  --     return by_sev[d.severity]
-  --   end,
-  -- },
+  -- virtual_text handled by tiny-inline-diagnostic (lua/plugins/coding.lua). Native alternative:
+  -- virtual_text = { source = "if_many", spacing = 2 },
   signs = have_nerd and {
     text = {
       [vim.diagnostic.severity.ERROR] = "󰅚 ",

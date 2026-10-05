@@ -1,5 +1,10 @@
--- Placeholder in case more default config required
-local caps = require("lsp._caps").make()
+local ok, cmp = pcall(require, "cmp_nvim_lsp")
+local base = vim.lsp.protocol.make_client_capabilities()
+local caps = ok and cmp.default_capabilities(base) or base
+-- local caps = require("blink.cmp").get_lsp_capabilities(base) -- when swapping to blink
+caps.workspace = caps.workspace or {}
+caps.workspace.fileOperations =
+  vim.tbl_deep_extend("force", caps.workspace.fileOperations or {}, { didRename = true, willRename = true })
 
 return {
   capabilities = caps,
