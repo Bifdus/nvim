@@ -385,7 +385,7 @@ return {
         desc = "Flash Treesitter",
       },
       {
-        "us",
+        "<c-s>",
         mode = { "c" },
         function()
           require("flash").toggle()
