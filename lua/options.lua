@@ -49,6 +49,8 @@ vim.g.have_nerd_font = true
 
 -- General Defaults
 vim.g.autoformat = false
+-- Set to true to enable Colemak-only keymaps.
+vim.g.colemak = vim.g.colemak or false
 vim.g.lazygit_config = true
 vim.opt.termguicolors = true
 vim.opt.number = true

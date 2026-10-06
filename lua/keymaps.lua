@@ -8,10 +8,12 @@ local wk = require("which-key")
 vim.keymap.set({ "n", "x" }, "s", "<Nop>")
 vim.keymap.set({ "n", "x" }, "S", "<Nop>")
 
--- NOTE: If you aren't using colemak, comment these out
--- Moves through display-lines, unless count is provided
-vim.keymap.set({ "n", "x" }, "<Down>", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true, desc = "Down" })
-vim.keymap.set({ "n", "x" }, "<Up>", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true, desc = "Up" })
+-- Colemak keymaps
+if vim.g.colemak then
+  -- Moves through display-lines, unless count is provided.
+  vim.keymap.set({ "n", "x" }, "<Down>", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true, desc = "Down" })
+  vim.keymap.set({ "n", "x" }, "<Up>", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true, desc = "Up" })
+end
 
 vim.keymap.set({ "n" }, "<leader>sm", "<cmd>messages<cr>", { desc = "Show Messages" })
 vim.keymap.set({ "n" }, "<leader>qr", "<cmd>restart<cr>", { desc = "Quick Restart" })
